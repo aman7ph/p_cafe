@@ -11,7 +11,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node backend/data/seeder --import",
     "data:delete": "node backend/data/seeder --delete",
-    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
+    "build": "npm install --force  && npm install --force --prefix frontend && npm run build --prefix frontend",
     "buildd":"npm install && npm install --prefix frontend"
   },
   "author": "",
