@@ -26,7 +26,7 @@ const Product = ({ product }) => {
           </Card.Title>
         </Link>
 
-        <Card.Text as="div">
+        <Card.Text as="div" className="">
           <div className="d-flex mx-2">
             <Form>
               <Form.Group controlId="qty">
@@ -35,6 +35,7 @@ const Product = ({ product }) => {
                   type="number"
                   className="w-75"
                   min="1"
+                  max="5"
                   value={qty}
                   onChange={(e) => setQty(Number(e.target.value))}
                 ></Form.Control>
@@ -53,7 +54,7 @@ const Product = ({ product }) => {
           </div>
         </Card.Text>
 
-        <Card.Text as="h3" className="text-center">
+        <Card.Text as="h3" className="text-center mt-2">
           Br{product.price}
         </Card.Text>
       </Card.Body>

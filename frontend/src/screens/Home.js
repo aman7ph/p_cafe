@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 import Feedback from "./../screens/FeedBack"
 import HomeProduct from "../components/HomeProduct"
 import { FaArrowRight } from "react-icons/fa"
+import Promotion from "./Promotion"
 
 import ProductCarousel from "../components/ProductCarousel"
 
@@ -49,7 +50,7 @@ const Home = () => {
             <Col className="d-flex justify-content-end centerd">
               <div>
                 <Link to="/menu" className="btn btn-success text-white">
-                  Our Products <FaArrowRight className="mx-2" />
+                  Our Menu <FaArrowRight className="mx-2" />
                 </Link>
               </div>
             </Col>
@@ -65,10 +66,11 @@ const Home = () => {
             })}
           </Row>
 
-          <Row className="px-3">
-            <Col>
-              <Feedback />
-            </Col>
+          <Row className="px-3 justify-content-center mt-5">
+            <Feedback />
+          </Row>
+          <Row className="px-3 justify-content-center mt-5">
+            <Promotion />
           </Row>
         </>
       )}

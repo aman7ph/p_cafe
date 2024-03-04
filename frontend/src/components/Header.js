@@ -23,7 +23,13 @@ const Header = () => {
 
   return (
     <header>
-      <Navbar bg="white" variant="light" expand="md" collapseOnSelect>
+      <Navbar
+        bg="white"
+        variant="light"
+        expand="md"
+        collapseOnSelect
+        className="shadow p-3 mb-5 bg-body rounded"
+      >
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand className="text-success">
@@ -38,23 +44,29 @@ const Header = () => {
             <Nav className="ms-auto">
               <SearchBox />
               <LinkContainer to="/">
-                <Nav.Link>Home</Nav.Link>
+                <Nav.Link>
+                  <h5>Home</h5>
+                </Nav.Link>
               </LinkContainer>
               <LinkContainer to="/menu">
-                <Nav.Link>Menu</Nav.Link>
+                <Nav.Link>
+                  <h5>Menu</h5>
+                </Nav.Link>
               </LinkContainer>
               <LinkContainer to="/cart">
                 <Nav.Link>
-                  <FaShoppingCart /> cart
-                  {cartItems.length > 0 && (
-                    <Badge pill bg="success">
-                      {cartItems.reduce((acc, item) => acc + item.qty, 0)}
-                    </Badge>
-                  )}
+                  <h5>
+                    <FaShoppingCart /> Cart
+                    {cartItems.length > 0 && (
+                      <Badge pill bg="success">
+                        {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                      </Badge>
+                    )}
+                  </h5>
                 </Nav.Link>
               </LinkContainer>
               {user ? (
-                <NavDropdown title={user.name} id="username">
+                <NavDropdown as="h6" title={user.name} id="username">
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>
