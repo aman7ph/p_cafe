@@ -2,10 +2,10 @@ import { Link } from "react-router-dom"
 import Loader from "./Loader"
 import Message from "./Message"
 import { Carousel, Image } from "react-bootstrap"
-import { useGetTopProductsQuery } from "../redux/slices/productApiSlice"
+import { useGetLandingPageProductsQuery } from "../redux/slices/productApiSlice"
 
 const ProductCarousel = () => {
-  const { data, isLoading, error } = useGetTopProductsQuery()
+  const { data, isLoading, error } = useGetLandingPageProductsQuery()
 
   return isLoading ? (
     <Loader />

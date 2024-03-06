@@ -4,23 +4,21 @@ import Loader from "../../components/Loader"
 import Message from "../../components/Message"
 import FormContainer from "../../components/FormContainer"
 import {
-  useCreateProductMutation,
-  useUploadProductImageMutation,
-} from "../../redux/slices/productApiSlice"
+  useCreatePromotionMutation,
+  useUploadPromotionImageMutation,
+} from "../../redux/slices/promotionApiSlice"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 
-const CreateProductScreen = () => {
+const CreatePromotionScreen = () => {
   const navigate = useNavigate()
 
   const [name, setName] = useState("")
-  const [price, setPrice] = useState(0)
   const [image, setImage] = useState("")
-  const [description, setDescription] = useState("")
-  const [category, setCategory] = useState("")
-  const [createProduct, { isLoading, error }] = useCreateProductMutation()
+
+  const [createProduct, { isLoading, error }] = useCreatePromotionMutation()
   const [uploadProductImage, { isLoading: uploadloading }] =
-    useUploadProductImageMutation()
+    useUploadPromotionImageMutation()
 
   const uploadFileHandler = async (e) => {
     const formData = new FormData()
@@ -43,28 +41,25 @@ const CreateProductScreen = () => {
     try {
       const { data } = await createProduct({
         name,
-        price,
         image,
-        category,
-        description,
       })
       if (data) {
-        toast.success("Product created")
-        navigate("/admin/productlist")
+        toast.success("Promotion created")
+        navigate("/admin/promotionlist")
       }
     } catch (error) {
-      toast.error("Failed to create product")
+      toast.error("Failed to create promotion")
     }
   }
 
   return (
     <>
-      <Link to="/admin/productlist" className="btn btn-light my-3">
+      <Link to="/admin/promotionlist" className="btn btn-light my-3">
         Go Back
       </Link>
 
       <FormContainer>
-        <h1>Create Product</h1>
+        <h1>Create Promotion</h1>
 
         {isLoading ? (
           <Loader />
@@ -81,15 +76,7 @@ const CreateProductScreen = () => {
                 onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
-            <Form.Group controlId="price">
-              <Form.Label>Price</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Enter price"
-                value={price}
-                onChange={(e) => setPrice(+e.target.value)}
-              />
-            </Form.Group>
+
             <Form.Group controlId="image" className="my-2">
               <Form.Label>Image</Form.Label>
               {/* <Form.Control
@@ -104,29 +91,6 @@ const CreateProductScreen = () => {
                 onChange={uploadFileHandler}
               ></Form.Control>
             </Form.Group>
-
-            <Form.Group controlId="category">
-              <Form.Label>Category</Form.Label>
-              <Form.Select
-                aria-label="Default select example"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option disabled>Select an option</option>
-                <option value="food">Food</option>
-                <option value="drink">Drink</option>
-              </Form.Select>
-            </Form.Group>
-
-            <Form.Group controlId="description">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </Form.Group>
             <Button type="submit" variant="primary">
               create
             </Button>
@@ -137,4 +101,4 @@ const CreateProductScreen = () => {
   )
 }
 
-export default CreateProductScreen
+export default CreatePromotionScreen

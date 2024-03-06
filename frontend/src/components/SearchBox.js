@@ -5,11 +5,14 @@ const SearchBox = () => {
   const navigate = useNavigate()
   const { keyword: urlKeyword } = useParams()
   const [keyword, setKeyword] = useState(urlKeyword || "")
+
   const submitHandler = () => {
     if (keyword.trim()) {
       navigate(`/search/${keyword}`)
+      setKeyword("")
     } else {
       navigate("/")
+      setKeyword("")
     }
   }
   return (

@@ -8,3 +8,4 @@ export const PAYPAL_URL = `/api/config/paypal`
 export const CHAPA_URL = `/api/chapa`
 export const UPLOAD_URL = `/api/uploads`
 export const FEEDBACK_URL = `/api/feedback`
+export const PROMOTION_URL = `/api/promotions`

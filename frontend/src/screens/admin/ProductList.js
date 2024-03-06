@@ -2,20 +2,28 @@ import { FaEdit, FaTrash, FaPlus } from "react-icons/fa"
 import Loader from "../../components/Loader"
 import Message from "../../components/Message"
 import { LinkContainer } from "react-router-bootstrap"
-import { Table, Button, Row, Col } from "react-bootstrap"
+import { Table, Button, Row, Col, Form } from "react-bootstrap"
 import {
-  useGetProductsQuery,
+  useGetAllProductsForAdminQuery,
   useDeleteProductMutation,
+  useGetUpdateStatusMutation,
 } from "../../redux/slices/productApiSlice"
 import { toast } from "react-toastify"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import Paginate from "../../components/Paginate"
+import { useState } from "react"
 
 const ProductList = () => {
-  const { pageNumber } = useParams()
-  const { data, isLoading, error, refetch } = useGetProductsQuery({
+  const navigate = useNavigate()
+  const { pageNumber, category } = useParams()
+  const [urlcategory, setUrlCategory] = useState(category || "")
+
+  let { data, isLoading, error, refetch } = useGetAllProductsForAdminQuery({
     pageNumber,
+    category,
   })
+
+  const [updateProductStatus] = useGetUpdateStatusMutation()
 
   const [deleteProduct, { isLoading: loadingDelete, error: loadingError }] =
     useDeleteProductMutation()
@@ -31,12 +39,46 @@ const ProductList = () => {
       }
     }
   }
+  const updateStatusHandler = async (id) => {
+    try {
+      await updateProductStatus(id)
+      refetch()
+      toast.success("Product status updated")
+    } catch (error) {
+      toast.error(error?.data?.message || error.error)
+    }
+  }
+
+  const categoryChangeHandler = async (e) => {
+    e.preventDefault()
+    if (urlcategory) {
+      navigate(`/admin/category/${urlcategory}`)
+    } else {
+      navigate("/admin/productlist")
+    }
+  }
 
   return (
     <>
       <Row>
         <Col>
           <h2>Products</h2>
+          <Form onSubmit={categoryChangeHandler}>
+            <Form.Group controlId="category" className="">
+              <Form.Label>Type</Form.Label>
+              <Form.Select
+                aria-label="Default select example"
+                onChange={(e) => setUrlCategory(e.target.value)}
+              >
+                <option value="">all category</option>
+                <option value="food">Food</option>
+                <option value="drink">Drink</option>
+              </Form.Select>
+            </Form.Group>
+            <Button type="submit" variant="primary">
+              apply filter
+            </Button>
+          </Form>
         </Col>
         <Col className="text-right">
           <LinkContainer to="/admin/product/create">
@@ -58,8 +100,8 @@ const ProductList = () => {
               <th>ID</th>
               <th>NAME</th>
               <th>PRICE</th>
-              <th>CATEGORY</th>
-              <th>BRAND</th>
+              <th>CATAGORY</th>
+              <th>STATUS</th>
               <th></th>
             </tr>
           </thead>
@@ -70,7 +112,13 @@ const ProductList = () => {
                 <td>{product.name}</td>
                 <td>{product.price}</td>
                 <td>{product.category}</td>
-                <td>{product.brand}</td>
+                <td>
+                  {product.status ? (
+                    <p style={{ color: "green" }}>Available</p>
+                  ) : (
+                    <p style={{ color: "red" }}>Not Available</p>
+                  )}
+                </td>
                 <td>
                   <LinkContainer to={`/admin/product/${product._id}`}>
                     <Button variant="light" className="btn-sm">
@@ -83,6 +131,13 @@ const ProductList = () => {
                     onClick={() => deleteHandler(product._id)}
                   >
                     <FaTrash style={{ color: "white" }} />
+                  </Button>
+                  <Button
+                    variant="info"
+                    className="btn-sm"
+                    onClick={() => updateStatusHandler(product._id)}
+                  >
+                    <FaTrash style={{ color: "yellow" }} />
                   </Button>
                 </td>
               </tr>

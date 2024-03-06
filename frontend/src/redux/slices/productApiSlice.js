@@ -4,9 +4,9 @@ import { apiSlice } from "./apiSlice.js"
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: ({ pageNumber, keyword }) => ({
+      query: ({ pageNumber, keyword, category }) => ({
         url: PRODUCTS_URL,
-        params: { pageNumber, keyword },
+        params: { pageNumber, keyword, category },
       }),
       keepUnusedDataFor: 5,
       invalidatesTags: ["Products"],
@@ -45,20 +45,24 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Products"],
     }),
-    creareReviewProduct: builder.mutation({
-      query: (data) => ({
-        url: `${PRODUCTS_URL}/${data.id}/review`,
-        method: "POST",
-        body: data,
-      }),
-    }),
-    getTopProducts: builder.query({
-      query: () => ({ url: `${PRODUCTS_URL}/top`, method: "GET" }),
-      keepUnusedDataFor: 5,
-    }),
     getLandingPageProducts: builder.query({
       query: () => ({ url: `${PRODUCTS_URL}/landingPage`, method: "GET" }),
       keepUnusedDataFor: 5,
+    }),
+    getUpdateStatus: builder.mutation({
+      query: (id) => ({
+        url: `${PRODUCTS_URL}/${id}/status`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["Products"],
+    }),
+    getAllProductsForAdmin: builder.query({
+      query: ({ pageNumber, keyword, category }) => ({
+        url: `${PRODUCTS_URL}/all`,
+        params: { pageNumber, keyword, category },
+      }),
+      keepUnusedDataFor: 5,
+      providesTags: ["Products"],
     }),
   }),
 })
@@ -70,7 +74,7 @@ export const {
   useUpdateProductMutation,
   useUploadProductImageMutation,
   useDeleteProductMutation,
-  useCreareReviewProductMutation,
-  useGetTopProductsQuery,
+  useGetUpdateStatusMutation,
   useGetLandingPageProductsQuery,
+  useGetAllProductsForAdminQuery,
 } = productsApiSlice

@@ -34,6 +34,10 @@ import CreateProductScreen from "./screens/admin/CreateProductScreen"
 import UsersList from "./screens/admin/UsersList"
 import UserEditScreen from "./screens/admin/UserEditScreen"
 import MenuPage from "./screens/MenuPage"
+import PromotionListScreen from "./screens/admin/PromotionListScreen"
+import PromotionUpdateScreen from "./screens/admin/UpdatePromootionScreen"
+import CreatePromotionScreen from "./screens/admin/CreatePromotionScreen"
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -42,11 +46,17 @@ const router = createBrowserRouter(
       <Route path="/page/:pageNumber" element={<MenuPage />} />
       <Route path="/search/:keyword" element={<MenuPage />} />
       <Route path="/search/:keyword/page/:pageNumber" element={<MenuPage />} />
+      <Route path="/category/:category" element={<MenuPage />} />
+      <Route
+        path="/category/:category/page/:pageNumber"
+        element={<MenuPage />}
+      />
       <Route path="/product/:id" element={<ProductDetail />} />
       <Route path="/cart" element={<CartScreen />} />
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
       <Route path="/order/:id" element={<OrderScreen />} />
+
       <Route path="" element={<PrivateRouter />}>
         {/* <Route path="/shipping" element={<ShippingScreen />} />
         <Route path="/payment" element={<PaymentScreen />} />
@@ -56,6 +66,11 @@ const router = createBrowserRouter(
       </Route>
       <Route path="" element={<AdminRouter />}>
         <Route path="/admin/orderlist" element={<OrderListScreen />} />
+        <Route path="/admin/category/:category" element={<ProductList />} />
+        <Route
+          path="/admin/category/:category/:pageNumber"
+          element={<ProductList />}
+        />
         <Route path="/admin/productlist" element={<ProductList />} />
         <Route
           path="/admin/productlist/:pageNumber"
@@ -65,6 +80,15 @@ const router = createBrowserRouter(
         <Route path="/admin/product/create" element={<CreateProductScreen />} />
         <Route path="/admin/userlist" element={<UsersList />} />
         <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
+        <Route path="/admin/promotionlist" element={<PromotionListScreen />} />
+        <Route
+          path="/admin/promotion/:id"
+          element={<PromotionUpdateScreen />}
+        />
+        <Route
+          path="/admin/promotion/create"
+          element={<CreatePromotionScreen />}
+        />
       </Route>
     </Route>
   )
