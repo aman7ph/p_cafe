@@ -45,24 +45,24 @@ const Header = () => {
               <SearchBox />
               <LinkContainer to="/">
                 <Nav.Link>
-                  <h5>Home</h5>
+                  <h6>Home</h6>
                 </Nav.Link>
               </LinkContainer>
               <LinkContainer to="/menu">
                 <Nav.Link>
-                  <h5>Menu</h5>
+                  <h6>Menu</h6>
                 </Nav.Link>
               </LinkContainer>
               <LinkContainer to="/cart">
                 <Nav.Link>
-                  <h5>
+                  <h6>
                     <FaShoppingCart /> Cart
                     {cartItems.length > 0 && (
                       <Badge pill bg="success">
                         {cartItems.reduce((acc, item) => acc + item.qty, 0)}
                       </Badge>
                     )}
-                  </h5>
+                  </h6>
                 </Nav.Link>
               </LinkContainer>
               {user ? (
@@ -94,6 +94,9 @@ const Header = () => {
                   </LinkContainer>
                   <LinkContainer to="/admin/promotionlist">
                     <NavDropdown.Item>promotion</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/materiallist">
+                    <NavDropdown.Item>Materials</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
               )}

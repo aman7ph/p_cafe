@@ -46,7 +46,7 @@ const Product = ({ product }) => {
             </Form>
             <div>
               <Button
-                className="btn-block "
+                className="btn-block mx-1 "
                 type="button"
                 disabled={product.countInStock === 0}
                 onClick={() => addToCartHandler(product._id)}

@@ -9,3 +9,4 @@ export const CHAPA_URL = `/api/chapa`
 export const UPLOAD_URL = `/api/uploads`
 export const FEEDBACK_URL = `/api/feedback`
 export const PROMOTION_URL = `/api/promotions`
+export const MATERIAL_URL = `/api/materials`

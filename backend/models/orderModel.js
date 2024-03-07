@@ -6,6 +6,10 @@ const orderSchema = mongoose.Schema(
       type: String,
       required: [true, "Please enter your name"],
     },
+    orderNumber: {
+      type: String,
+      required: [true, "Please enter your order number"],
+    },
     phoneNumber: {
       type: String,
       required: [true, "Please enter your phone number"],

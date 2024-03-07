@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+import mongoose from "mongoose"
 
 const { Schema, model } = mongoose
 
@@ -19,22 +19,21 @@ const materialSchema = new Schema(
       type: Number,
       required: true,
       min: 0,
-      validate: {
-        validator: (value) => value <= this.initialNumber,
-        message: "Damaged number cannot exceed initial number",
-      },
+      default: 0,
     },
-    // Calculate remaining number dynamically on retrieval
+
     remainingNumber: {
       type: Number,
+      default: 0,
       required: true,
       min: 0,
     },
-    // Calculate total number dynamically on retrieval
-    totalNumber: {
+
+    addedNumber: {
       type: Number,
       required: true,
       min: 0,
+      default: 0,
     },
   },
   {

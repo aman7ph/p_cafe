@@ -37,6 +37,8 @@ import MenuPage from "./screens/MenuPage"
 import PromotionListScreen from "./screens/admin/PromotionListScreen"
 import PromotionUpdateScreen from "./screens/admin/UpdatePromootionScreen"
 import CreatePromotionScreen from "./screens/admin/CreatePromotionScreen"
+import MaterialList from "./screens/admin/MaterialList"
+import CreateMaterialsScreen from "./screens/admin/CreateMaterialScreen"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -65,6 +67,15 @@ const router = createBrowserRouter(
         <Route path="/profile" element={<ProfileScreen />} />
       </Route>
       <Route path="" element={<AdminRouter />}>
+        <Route
+          path="/admin/material/create"
+          element={<CreateMaterialsScreen />}
+        />
+        <Route path="/admin/materiallist" element={<MaterialList />} />
+        <Route
+          path="/admin/materiallist/:pageNumber"
+          element={<MaterialList />}
+        />
         <Route path="/admin/orderlist" element={<OrderListScreen />} />
         <Route path="/admin/category/:category" element={<ProductList />} />
         <Route

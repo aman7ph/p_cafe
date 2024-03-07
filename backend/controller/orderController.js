@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler"
 import Order from "../models/orderModel.js"
+import { generateRandom4DigitNumber } from "../utils/generateOrderNumber.js"
 
 const addOrderItems = asyncHandler(async (req, res) => {
   const { orderItems, owner, phoneNumber, ariveTime, totalPrice } = req.body
@@ -19,6 +20,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
       phoneNumber,
       ariveTime,
       totalPrice,
+      orderNumber: generateRandom4DigitNumber(),
     })
 
     res.status(201).json(order)

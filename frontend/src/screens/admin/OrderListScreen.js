@@ -21,6 +21,7 @@ const OrderListScreen = () => {
           <thead>
             <tr>
               <th>ID</th>
+              <th>ORDER_no</th>
               <th>USER</th>
               <th>DATE</th>
               <th>TOTAL</th>
@@ -32,6 +33,7 @@ const OrderListScreen = () => {
             {data?.map((order) => (
               <tr key={order._id}>
                 <td>{order._id}</td>
+                <td>{order.orderNumber || "1234"}</td>
                 <td>{order.owner}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>{order.totalPrice}</td>

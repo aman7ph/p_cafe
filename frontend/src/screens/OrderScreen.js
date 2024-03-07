@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom"
 import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { setCart } from "../redux/slices/cartSlice"
-
+import dateFormater from "../utils/dateFormater"
 import {
   useGetOrderDetailByIdQuery,
   usePayOrderMutation,
@@ -27,13 +27,15 @@ const OrderScreen = () => {
   const { userInfo } = useSelector((state) => state.auth)
 
   async function onApproveTest() {
-    const { data } = await payOrder({
-      id,
-      details: { id: "123", status: "approved", payer: {} },
-    })
-    if (data) {
-      toast.success("Order paid")
-      refetch()
+    if (window.confirm("Are you sure?")) {
+      const { data } = await payOrder({
+        id,
+        details: { id: "123", status: "approved", payer: {} },
+      })
+      if (data) {
+        toast.success("Order paid")
+        refetch()
+      }
     }
   }
 
@@ -61,21 +63,23 @@ const OrderScreen = () => {
     )
     window.location.reload()
   }
-
+  console.log(order)
   return isLoading ? (
     <Loader />
   ) : error ? (
     <Message variant="danger">{error}</Message>
   ) : (
     <>
-      <h1>Order {order._id}</h1>
+      <h2>{`Your Order Number -> ${order.orderNumber || order._id}`}</h2>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
             {userInfo && (
               <ListGroup.Item>
                 {order.isPaid ? (
-                  <Message variant="success">Paid on {order.paidAt}</Message>
+                  <Message variant="success">
+                    Paid on {dateFormater(order.paidAt)}
+                  </Message>
                 ) : (
                   <Message variant="danger">Not Paid</Message>
                 )}
@@ -99,7 +103,10 @@ const OrderScreen = () => {
                           />
                         </Col>
                         <Col>
-                          <Link to={`/product/${item._id}`}>{item.name}</Link>
+                          <h4>
+                            {item.name}
+                            <strong>{`(${item.qty})`}</strong>
+                          </h4>
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -118,25 +125,33 @@ const OrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Name</Col>
-                  <Col>${order.owner}</Col>
+                  <Col>{order.owner}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Phone_No</Col>
-                  <Col>${order.phoneNumber}</Col>
+                  <Col>{order.phoneNumber}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>arive time</Col>
-                  <Col>${order.ariveTime}</Col>
+                  <Col>{order.ariveTime}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${order.totalPrice}</Col>
+                  <Col>Br{order.totalPrice}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>id</Col>
+                  <Col>
+                    <small>{order._id}</small>
+                  </Col>
                 </Row>
               </ListGroup.Item>
 
@@ -158,14 +173,16 @@ const OrderScreen = () => {
                           </Button>
                         </div>
                       )}
-                      <div>
-                        <Button
-                          style={{ marginBottom: "10px" }}
-                          onClick={updateOederHandler}
-                        >
-                          update Order
-                        </Button>
-                      </div>
+                      {!userInfo && (
+                        <div>
+                          <Button
+                            style={{ marginBottom: "10px" }}
+                            onClick={updateOederHandler}
+                          >
+                            update Order
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   )}
                 </ListGroup.Item>

@@ -8,6 +8,7 @@ import orderRouter from "./routes/orderRoutes.js"
 import uploadRouter from "./routes/uploadRoutes.js"
 import feedbackRouter from "./routes/feedbackRoute.js"
 import promotionRouter from "./routes/promotionRoute.js"
+import materialRouter from "./routes/materialRoute.js"
 import { notFound, errorHandler } from "./middleware/errorMidleware.js"
 import morgan from "morgan"
 import cookieParser from "cookie-parser"
@@ -29,6 +30,7 @@ app.use("/api/orders", orderRouter)
 app.use("/api/uploads", uploadRouter)
 app.use("/api/feedback", feedbackRouter)
 app.use("/api/promotions", promotionRouter)
+app.use("/api/materials", materialRouter)
 const __dirname = path.resolve()
 console.log(__dirname)
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")))
