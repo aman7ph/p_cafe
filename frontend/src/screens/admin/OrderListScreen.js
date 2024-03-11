@@ -1,17 +1,25 @@
-import { FaTimes } from "react-icons/fa"
+import { FaTimes, FaArrowLeft } from "react-icons/fa"
 import Loader from "../../components/Loader"
 import Message from "../../components/Message"
-
+import { useParams, Link } from "react-router-dom"
 import { LinkContainer } from "react-router-bootstrap"
 import { Table, Button } from "react-bootstrap"
 import { useGetAllOrdersQuery } from "../../redux/slices/orderApiSlice"
+import Paginate from "../../components/Paginate"
 
 const OrderListScreen = () => {
-  const { data, isLoading, error } = useGetAllOrdersQuery()
-
+  const { pageNumber } = useParams()
+  const { data, isLoading, error } = useGetAllOrdersQuery({ pageNumber })
+  console.log(data)
   return (
     <>
-      <h2>Orders</h2>
+      <h2>
+        {" "}
+        <Link to="/" className="btn btn-light mx-4">
+          <FaArrowLeft /> go back
+        </Link>
+        Orders
+      </h2>
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -30,7 +38,7 @@ const OrderListScreen = () => {
             </tr>
           </thead>
           <tbody>
-            {data?.map((order) => (
+            {data?.orders?.map((order) => (
               <tr key={order._id}>
                 <td>{order._id}</td>
                 <td>{order.orderNumber || "1234"}</td>
@@ -56,6 +64,12 @@ const OrderListScreen = () => {
           </tbody>
         </Table>
       )}
+      <Paginate
+        page={data?.page}
+        pages={data?.pages}
+        isAdmin={true}
+        link="/admin/orderlist"
+      />
     </>
   )
 }

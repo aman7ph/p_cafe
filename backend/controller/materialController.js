@@ -2,12 +2,13 @@ import Material from "../models/materialModel.js"
 import asyncHandler from "express-async-handler"
 
 export const getAllMaterials = asyncHandler(async (req, res, next) => {
-  const pageSize = 3
+  const pageSize = 8
   const page = Number(req.query.pageNumber) || 1
   const count = await Material.countDocuments({})
   const materials = await Material.find({})
     .limit(pageSize)
     .skip(pageSize * (page - 1))
+    .sort({ createdAt: -1 })
 
   res.status(200).json({
     status: "success",

@@ -1,4 +1,4 @@
-import { FaEdit, FaTrash, FaPlus } from "react-icons/fa"
+import { FaEdit, FaTrash, FaArrowLeft } from "react-icons/fa"
 import Loader from "../../components/Loader"
 import Message from "../../components/Message"
 import { LinkContainer } from "react-router-bootstrap"
@@ -9,7 +9,7 @@ import {
   useGetUpdateStatusMutation,
 } from "../../redux/slices/productApiSlice"
 import { toast } from "react-toastify"
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams, useNavigate, Link } from "react-router-dom"
 import Paginate from "../../components/Paginate"
 import { useState } from "react"
 
@@ -62,7 +62,12 @@ const ProductList = () => {
     <>
       <Row>
         <Col>
-          <h2>Products</h2>
+          <h2>
+            <Link to="/" className="btn btn-light mx-4">
+              <FaArrowLeft /> go back
+            </Link>
+            Products{" "}
+          </h2>
           <Form onSubmit={categoryChangeHandler}>
             <Form.Group controlId="category" className="">
               <Form.Label>Type</Form.Label>
@@ -80,14 +85,6 @@ const ProductList = () => {
             </Button>
           </Form>
         </Col>
-        <Col className="text-right">
-          <LinkContainer to="/admin/product/create">
-            <Button className="my-3 btn-sm">
-              <FaPlus />
-              Create Product
-            </Button>
-          </LinkContainer>
-        </Col>
       </Row>
       {isLoading ? (
         <Loader />
@@ -97,7 +94,6 @@ const ProductList = () => {
         <Table striped hover responsive className="table-sm">
           <thead>
             <tr>
-              <th>ID</th>
               <th>NAME</th>
               <th>PRICE</th>
               <th>CATAGORY</th>
@@ -108,7 +104,6 @@ const ProductList = () => {
           <tbody>
             {data.products.map((product) => (
               <tr key={product._id}>
-                <td>{product._id}</td>
                 <td>{product.name}</td>
                 <td>{product.price}</td>
                 <td>{product.category}</td>

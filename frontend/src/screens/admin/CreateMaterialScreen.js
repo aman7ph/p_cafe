@@ -6,6 +6,7 @@ import FormContainer from "../../components/FormContainer"
 import { useCreateMaterialMutation } from "../../redux/slices/MaterialApiSlice"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import { FaArrowLeft } from "react-icons/fa"
 
 const CreateMaterialsScreen = () => {
   const navigate = useNavigate()
@@ -33,8 +34,8 @@ const CreateMaterialsScreen = () => {
 
   return (
     <>
-      <Link to="/admin/materiallist" className="btn btn-light my-3">
-        Go Back
+      <Link to="/" className="btn btn-light mx-4">
+        <FaArrowLeft /> go back
       </Link>
 
       <FormContainer>

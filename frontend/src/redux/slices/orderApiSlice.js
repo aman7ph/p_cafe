@@ -1,7 +1,5 @@
 import { apiSlice } from "./apiSlice.js"
 import { ORDER_URL } from "../constants.js"
-import { PAYPAL_URL } from "../constants.js"
-import { CHAPA_URL } from "../constants.js"
 
 export const orderApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -25,49 +23,15 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         body: { ...details },
       }),
     }),
-    getPayPalClientId: builder.query({
-      query: () => ({
-        url: PAYPAL_URL,
-      }),
-      keepUnusedDataFor: 5,
-    }),
-    // getChapaPayClientId: builder.query({
-    //   query: () => ({
-    //     url: CHAPA_URL,
-    //   }),
-    //   keepUnusedDataFor: 5,
-    //}),
-    payChapaOrder: builder.mutation({
-      query: (order) => ({
-        url: CHAPA_URL,
-        method: "POST",
-        body: { ...order },
-      }),
-    }),
-    verfyChapa: builder.query({
-      query: (id) => ({
-        url: `${CHAPA_URL}/${id}`,
-        method: "GET",
-      }),
-    }),
-    getMyOrders: builder.query({
-      query: () => ({
-        url: `${ORDER_URL}/myorders`,
-      }),
-      keepUnusedDataFor: 5,
-    }),
+
     getAllOrders: builder.query({
-      query: () => ({
+      query: ({ pageNumber }) => ({
         url: ORDER_URL,
+        params: { pageNumber },
       }),
       keepUnusedDataFor: 5,
     }),
-    deliverOrder: builder.mutation({
-      query: (id) => ({
-        url: `${ORDER_URL}/${id}/deliver`,
-        method: "PUT",
-      }),
-    }),
+
     updateOrder: builder.mutation({
       query: (order) => ({
         url: `${ORDER_URL}/${order.id}/update`,
@@ -81,13 +45,10 @@ export const orderApiSlice = apiSlice.injectEndpoints({
 export const {
   useAddOrderItemsMutation,
   useGetOrderDetailByIdQuery,
-  useGetPayPalClientIdQuery,
+
   usePayOrderMutation,
-  useGetChapaPayClientIdQuery,
-  usePayChapaOrderMutation,
-  useVerfyChapaQuery,
+
   useGetMyOrdersQuery,
   useGetAllOrdersQuery,
-  useDeliverOrderMutation,
   useUpdateOrderMutation,
 } = orderApiSlice

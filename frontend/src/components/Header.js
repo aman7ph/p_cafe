@@ -42,33 +42,43 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <SearchBox />
-              <LinkContainer to="/">
-                <Nav.Link>
-                  <h6>Home</h6>
-                </Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/menu">
-                <Nav.Link>
-                  <h6>Menu</h6>
-                </Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/cart">
-                <Nav.Link>
-                  <h6>
-                    <FaShoppingCart /> Cart
-                    {cartItems.length > 0 && (
-                      <Badge pill bg="success">
-                        {cartItems.reduce((acc, item) => acc + item.qty, 0)}
-                      </Badge>
-                    )}
-                  </h6>
-                </Nav.Link>
-              </LinkContainer>
+              {!user && <SearchBox />}
+              {!user && (
+                <LinkContainer to="/">
+                  <Nav.Link>
+                    <h6>Home</h6>
+                  </Nav.Link>
+                </LinkContainer>
+              )}
+              {!user && (
+                <LinkContainer to="/menu">
+                  <Nav.Link>
+                    <h6>Menu</h6>
+                  </Nav.Link>
+                </LinkContainer>
+              )}
+              {!user && (
+                <LinkContainer to="/cart">
+                  <Nav.Link>
+                    <h6>
+                      <FaShoppingCart /> Cart
+                      {cartItems.length > 0 && (
+                        <Badge pill bg="success">
+                          {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                        </Badge>
+                      )}
+                    </h6>
+                  </Nav.Link>
+                </LinkContainer>
+              )}
               {user ? (
                 <NavDropdown as="h6" title={user.name} id="username">
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to="/admin/userlist">
+                    <NavDropdown.Item>userlist</NavDropdown.Item>
                   </LinkContainer>
                   <NavDropdown.Item onClick={logoutHandler}>
                     Logout

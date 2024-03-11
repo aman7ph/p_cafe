@@ -1,5 +1,8 @@
+import fs from "fs"
 import Product from "./../models/productModel.js"
 import asyncHandler from "express-async-handler"
+import { fileURLToPath } from "url"
+import path from "path"
 
 export const getAllProduct = asyncHandler(async (req, res, next) => {
   const pageSize = 8
@@ -91,7 +94,18 @@ export const updateProduct = asyncHandler(async (req, res, next) => {
 export const deleteProduct = asyncHandler(async (req, res, next) => {
   const { id } = req.params
 
-  await Product.findByIdAndDelete(id)
+  const product = await Product.findByIdAndDelete(id)
+
+  try {
+    const __filename = fileURLToPath(import.meta.url)
+    const __dirname = path.dirname(__filename)
+    const imagePath = path.join(__dirname, "..", "..", product.image)
+    await fs.promises.unlink(imagePath)
+
+    console.log("Image deleted successfully")
+  } catch (err) {
+    console.error("Error while deleting image:", err)
+  }
 
   res.status(200).json({
     status: "success",

@@ -39,6 +39,8 @@ import PromotionUpdateScreen from "./screens/admin/UpdatePromootionScreen"
 import CreatePromotionScreen from "./screens/admin/CreatePromotionScreen"
 import MaterialList from "./screens/admin/MaterialList"
 import CreateMaterialsScreen from "./screens/admin/CreateMaterialScreen"
+import FeedbackList from "./screens/admin/FeedbackList"
+import FeedbackDetail from "./screens/admin/FeedbackDetail"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -60,10 +62,6 @@ const router = createBrowserRouter(
       <Route path="/order/:id" element={<OrderScreen />} />
 
       <Route path="" element={<PrivateRouter />}>
-        {/* <Route path="/shipping" element={<ShippingScreen />} />
-        <Route path="/payment" element={<PaymentScreen />} />
-        <Route path="/placeorder" element={<PlaceOrder />} /> */}
-
         <Route path="/profile" element={<ProfileScreen />} />
       </Route>
       <Route path="" element={<AdminRouter />}>
@@ -77,6 +75,10 @@ const router = createBrowserRouter(
           element={<MaterialList />}
         />
         <Route path="/admin/orderlist" element={<OrderListScreen />} />
+        <Route
+          path="/admin/orderlist/:pageNumber"
+          element={<OrderListScreen />}
+        />
         <Route path="/admin/category/:category" element={<ProductList />} />
         <Route
           path="/admin/category/:category/:pageNumber"
@@ -100,6 +102,12 @@ const router = createBrowserRouter(
           path="/admin/promotion/create"
           element={<CreatePromotionScreen />}
         />
+        <Route path="/admin/feedbacklist" element={<FeedbackList />} />
+        <Route
+          path="/admin/feedbacklist/:pageNumber"
+          element={<FeedbackList />}
+        />
+        <Route path="/admin/feedback/:id" element={<FeedbackDetail />} />
       </Route>
     </Route>
   )

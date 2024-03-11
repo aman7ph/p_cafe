@@ -8,6 +8,8 @@ import {
   useDeletePromotionMutation,
 } from "../../redux/slices/promotionApiSlice"
 import { toast } from "react-toastify"
+import { Link } from "react-router-dom"
+import { FaArrowLeft } from "react-icons/fa"
 
 const PromotionListScreen = () => {
   const { data, isLoading, error, refetch } = useGetAllPromotionsQuery()
@@ -31,15 +33,12 @@ const PromotionListScreen = () => {
     <>
       <Row>
         <Col>
-          <h2>Products</h2>
-        </Col>
-        <Col className="text-right">
-          <LinkContainer to="/admin/promotion/create">
-            <Button className="my-3 btn-sm">
-              <FaPlus />
-              Create Promotion
-            </Button>
-          </LinkContainer>
+          <h2>
+            <Link to="/" className="btn btn-light mx-4">
+              <FaArrowLeft /> go back
+            </Link>
+            Products
+          </h2>
         </Col>
       </Row>
       {isLoading ? (

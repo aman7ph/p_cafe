@@ -1,28 +1,33 @@
-import { FaCheck, FaEdit, FaTrash, FaTimes } from "react-icons/fa"
+import { FaTrash } from "react-icons/fa"
 import Loader from "../../components/Loader"
 import Message from "../../components/Message"
 import { LinkContainer } from "react-router-bootstrap"
 import { Table, Button, Row, Col } from "react-bootstrap"
 import {
-  useGetUsersQuery,
-  useDeleteUserMutation,
-} from "../../redux/slices/userApiSlice"
+  useGetFeedbacksQuery,
+  useDeleteFeedbackMutation,
+} from "../../redux/slices/feedbackSlice"
 import { toast } from "react-toastify"
-import { Link } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
+import Paginate from "../../components/Paginate"
 import { FaArrowLeft } from "react-icons/fa"
 
-const UserList = () => {
-  const { data: users, isLoading, error, refetch } = useGetUsersQuery()
+const FeedbackList = () => {
+  const { pageNumber } = useParams()
 
-  const [deleteUser, { isLoading: loadingDelete, error: loadingError }] =
-    useDeleteUserMutation()
+  let { data, isLoading, error, refetch } = useGetFeedbacksQuery({
+    pageNumber,
+  })
+
+  const [deleteFeedback, { isLoading: loadingDelete, error: loadingError }] =
+    useDeleteFeedbackMutation()
 
   const deleteHandler = async (id) => {
     if (window.confirm("Are you sure?")) {
       try {
-        await deleteUser(id)
+        await deleteFeedback(id)
         refetch()
-        toast.success("User deleted")
+        toast.success("FeedBack deleted")
       } catch (error) {
         toast.error(error?.data?.message || error.error)
       }
@@ -34,10 +39,11 @@ const UserList = () => {
       <Row>
         <Col>
           <h2>
+            {" "}
             <Link to="/" className="btn btn-light mx-4">
               <FaArrowLeft /> go back
             </Link>
-            Users
+            FeedBacks
           </h2>
         </Col>
       </Row>
@@ -49,50 +55,45 @@ const UserList = () => {
         <Table striped hover responsive className="table-sm">
           <thead>
             <tr>
-              <th>ID</th>
               <th>NAME</th>
               <th>EMAIL</th>
-              <th>ADMIN</th>
-              <th></th>
+              <th>COMMENT</th>
+              <th>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user._id}>
-                <td>{user._id}</td>
-                <td>{user.name}</td>
+            {data.feedbacks.map((feedback) => (
+              <tr key={feedback._id}>
+                <td>{feedback.name}</td>
+                <td>{feedback.email}</td>
+                <td>{feedback.comment}</td>
                 <td>
-                  <a href={`mailto:${user.email}`}>{user.email}</a>
-                </td>
-                <td>
-                  {user.role === "admin" ? (
-                    <FaCheck style={{ color: "green" }} />
-                  ) : (
-                    <FaTimes style={{ color: "red" }} />
-                  )}
-                </td>
-
-                <td>
-                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
-                    <Button variant="light" className="btn-sm">
-                      <FaEdit />
-                    </Button>
-                  </LinkContainer>
                   <Button
                     variant="danger"
                     className="btn-sm"
-                    onClick={() => deleteHandler(user._id)}
+                    onClick={() => deleteHandler(feedback._id)}
                   >
                     <FaTrash style={{ color: "white" }} />
                   </Button>
+                  <LinkContainer to={`/admin/feedback/${feedback._id}`}>
+                    <Button variant="light" className="btn-sm">
+                      Details
+                    </Button>
+                  </LinkContainer>
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
       )}
+      <Paginate
+        page={data?.page}
+        pages={data?.pages}
+        isAdmin={true}
+        link="/admin/feedbacklist"
+      />
     </>
   )
 }
 
-export default UserList
+export default FeedbackList

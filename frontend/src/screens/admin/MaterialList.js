@@ -10,9 +10,10 @@ import {
   useSubstractMaterialsMutation,
 } from "../../redux/slices/MaterialApiSlice"
 import { toast } from "react-toastify"
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams, useNavigate, Link } from "react-router-dom"
 import Paginate from "../../components/Paginate"
 import { useState } from "react"
+import { FaArrowLeft } from "react-icons/fa"
 
 const MaterialList = () => {
   const navigate = useNavigate()
@@ -66,7 +67,13 @@ const MaterialList = () => {
     <>
       <Row>
         <Col>
-          <h2>Materials</h2>
+          <h2>
+            {" "}
+            <Link to="/" className="btn btn-light mx-4">
+              <FaArrowLeft /> go back
+            </Link>
+            Materials
+          </h2>
         </Col>
         <Col className="text-right">
           <LinkContainer to="/admin/material/create">

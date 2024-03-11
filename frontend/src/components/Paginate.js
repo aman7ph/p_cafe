@@ -6,7 +6,7 @@ const Paginate = ({
   pages,
   isAdmin = false,
   keyword = "",
-  link = `/admin/productlist/`,
+  link = `/admin/productlist`,
 }) => {
   return (
     pages > 1 && (

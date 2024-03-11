@@ -27,15 +27,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
   }
 })
 
-const getMyOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ user: req.user._id })
-  if (!orders) {
-    res.status(404)
-    throw new Error("Order not found")
-  }
-  res.status(200).json(orders)
-})
-
 const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
   if (!order) {
@@ -71,12 +62,23 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 })
 
 const getOrders = asyncHandler(async (req, res) => {
+  const pageSize = 8
+  const page = Number(req.query.pageNumber) || 1
+  const count = await Order.countDocuments({})
   const orders = await Order.find({})
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
+    .sort({ createdAt: -1 })
   if (!orders) {
     res.status(404)
     throw new Error("Order not found")
   }
-  res.status(200).json(orders)
+  res.status(200).json({
+    status: "success",
+    orders,
+    pages: Math.ceil(count / pageSize),
+    page,
+  })
 })
 
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
@@ -114,12 +116,21 @@ const updateOrder = asyncHandler(async (req, res) => {
   }
 })
 
+const getorderbyorderNumber = asyncHandler(async (req, res) => {
+  const order = await Order.findOne({ orderNumber: req.params.orderNumber })
+  if (!order) {
+    res.status(404)
+    throw new Error("Order not found")
+  }
+  res.status(200).json(order)
+})
+
 export {
   addOrderItems,
-  getMyOrders,
   getOrderById,
   updateOrderToPaid,
   getOrders,
   updateOrderToDelivered,
   updateOrder,
+  getorderbyorderNumber,
 }

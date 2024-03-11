@@ -11,6 +11,7 @@ import Loader from "../components/Loader"
 import Message from "../components/Message"
 
 import { toast } from "react-toastify"
+import { FaArrowLeft } from "react-icons/fa"
 
 const OrderScreen = () => {
   const { id } = useParams()
@@ -70,7 +71,13 @@ const OrderScreen = () => {
     <Message variant="danger">{error}</Message>
   ) : (
     <>
-      <h2>{`Your Order Number -> ${order.orderNumber || order._id}`}</h2>
+      <h2>
+        {" "}
+        <Link to="/admin/orderlist" className="btn btn-light mx-4">
+          <FaArrowLeft /> go back
+        </Link>
+        {`Your Order Number -> ${order.orderNumber || order._id}`}
+      </h2>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">

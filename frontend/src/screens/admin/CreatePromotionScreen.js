@@ -9,6 +9,7 @@ import {
 } from "../../redux/slices/promotionApiSlice"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import { FaArrowLeft } from "react-icons/fa"
 
 const CreatePromotionScreen = () => {
   const navigate = useNavigate()
@@ -54,8 +55,8 @@ const CreatePromotionScreen = () => {
 
   return (
     <>
-      <Link to="/admin/promotionlist" className="btn btn-light my-3">
-        Go Back
+      <Link to="/" className="btn btn-light mx-4">
+        <FaArrowLeft /> go back
       </Link>
 
       <FormContainer>

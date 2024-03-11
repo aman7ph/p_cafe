@@ -11,12 +11,27 @@ export const feedbackApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getFeedbacks: builder.query({
-      query: () => ({
+      query: ({ pageNumber }) => ({
         url: FEEDBACK_URL,
+        params: { pageNumber },
       }),
       keepUnusedDataFor: 5,
+    }),
+    getFeedbackById: builder.query({
+      query: (id) => `${FEEDBACK_URL}/${id}`,
+    }),
+    deleteFeedback: builder.mutation({
+      query: (id) => ({
+        url: `${FEEDBACK_URL}/${id}`,
+        method: "DELETE",
+      }),
     }),
   }),
 })
 
-export const { useAddFeedbackMutation, useGetFeedbacksQuery } = feedbackApiSlice
+export const {
+  useAddFeedbackMutation,
+  useGetFeedbacksQuery,
+  useDeleteFeedbackMutation,
+  useGetFeedbackByIdQuery,
+} = feedbackApiSlice
