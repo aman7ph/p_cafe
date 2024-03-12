@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { setCart } from "../redux/slices/cartSlice"
 import dateFormater from "../utils/dateFormater"
 import {
-  useGetOrderDetailByIdQuery,
+  useGetOrderBYorderNumberQuery,
   usePayOrderMutation,
 } from "./../redux/slices/orderApiSlice"
 import Loader from "../components/Loader"
@@ -12,9 +12,12 @@ import Message from "../components/Message"
 
 import { toast } from "react-toastify"
 import { FaArrowLeft } from "react-icons/fa"
+import { useEffect } from "react"
 
-const OrderScreen = () => {
-  const { id } = useParams()
+const OrderNumber = () => {
+  console.log(useParams())
+  const { orderNumber } = useParams()
+
   const dispatch = useDispatch()
 
   const {
@@ -22,12 +25,14 @@ const OrderScreen = () => {
     refetch,
     isLoading,
     error,
-  } = useGetOrderDetailByIdQuery(id)
+  } = useGetOrderBYorderNumberQuery(orderNumber)
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation()
+  console.log(useGetOrderBYorderNumberQuery(orderNumber))
+
+  console.log(order)
 
   const { userInfo } = useSelector((state) => state.auth)
-
-  async function onApproveTest() {
+  async function onApproveTest(id) {
     if (window.confirm("Are you sure?")) {
       const { data } = await payOrder({
         id,
@@ -39,7 +44,6 @@ const OrderScreen = () => {
       }
     }
   }
-
   const updateOederHandler = () => {
     localStorage.setItem(
       "cart",
@@ -64,11 +68,14 @@ const OrderScreen = () => {
     )
     window.location.reload()
   }
-  console.log(order)
+  useEffect(() => {
+    refetch()
+  }, [])
+
   return isLoading ? (
     <Loader />
   ) : error ? (
-    <Message variant="danger">{error}</Message>
+    <Message variant="danger">{error.data.message}</Message>
   ) : (
     <>
       <h2>
@@ -79,7 +86,7 @@ const OrderScreen = () => {
         >
           <FaArrowLeft /> go back
         </Link>
-        {`Your Order Number -> `}
+        {`Your Order Number ->`}
         <strong className="text-danger">
           {" "}
           {order.orderNumber || order._id}
@@ -169,38 +176,28 @@ const OrderScreen = () => {
                 </Row>
               </ListGroup.Item>
 
-              {!order.isPaid && (
-                <ListGroup.Item>
-                  {loadingPay && <Loader />}
-
-                  {isLoading ? (
-                    <Loader />
-                  ) : (
-                    <div>
-                      {userInfo && (
-                        <div>
-                          <Button
-                            style={{ marginBottom: "10px" }}
-                            onClick={onApproveTest}
-                          >
-                            Order Paid
-                          </Button>
-                        </div>
-                      )}
-                      {!userInfo && (
-                        <div>
-                          <Button
-                            style={{ marginBottom: "10px" }}
-                            onClick={updateOederHandler}
-                          >
-                            update Order
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </ListGroup.Item>
-              )}
+              <ListGroup.Item>
+                {!userInfo && (
+                  <div>
+                    <Button
+                      style={{ marginBottom: "10px" }}
+                      onClick={updateOederHandler}
+                    >
+                      update Order
+                    </Button>
+                  </div>
+                )}
+                {userInfo && !order.isPaid && (
+                  <div>
+                    <Button
+                      style={{ marginBottom: "10px" }}
+                      onClick={() => onApproveTest(order._id)}
+                    >
+                      Order Paid
+                    </Button>
+                  </div>
+                )}
+              </ListGroup.Item>
             </ListGroup>
           </Card>
         </Col>
@@ -209,4 +206,4 @@ const OrderScreen = () => {
   )
 }
 
-export default OrderScreen
+export default OrderNumber

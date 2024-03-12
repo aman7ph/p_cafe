@@ -1,4 +1,5 @@
 import { FaTimes, FaArrowLeft } from "react-icons/fa"
+import { ImCheckmark } from "react-icons/im"
 import Loader from "../../components/Loader"
 import Message from "../../components/Message"
 import { useParams, Link } from "react-router-dom"
@@ -28,7 +29,6 @@ const OrderListScreen = () => {
         <Table striped hover responsive className="table-sm">
           <thead>
             <tr>
-              <th>ID</th>
               <th>ORDER_no</th>
               <th>USER</th>
               <th>DATE</th>
@@ -40,14 +40,13 @@ const OrderListScreen = () => {
           <tbody>
             {data?.orders?.map((order) => (
               <tr key={order._id}>
-                <td>{order._id}</td>
                 <td>{order.orderNumber || "1234"}</td>
                 <td>{order.owner}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>{order.totalPrice}</td>
                 <td>
                   {order.isPaid ? (
-                    order.paidAt.substring(0, 10)
+                    <ImCheckmark style={{ color: "green" }} />
                   ) : (
                     <FaTimes style={{ color: "red" }} />
                   )}

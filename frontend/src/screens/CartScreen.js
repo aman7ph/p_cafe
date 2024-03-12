@@ -185,7 +185,7 @@ const CartScreen = () => {
             <ListGroup.Item>
               {error && (
                 <Message variant="danger">
-                  {error.message}
+                  {error.data.message}
                   {console.log(error)}
                 </Message>
               )}

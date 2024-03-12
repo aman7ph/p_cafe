@@ -1,4 +1,5 @@
 import { FaEdit, FaTrash, FaArrowLeft } from "react-icons/fa"
+import { ImBlocked } from "react-icons/im"
 import Loader from "../../components/Loader"
 import Message from "../../components/Message"
 import { LinkContainer } from "react-router-bootstrap"
@@ -68,22 +69,24 @@ const ProductList = () => {
             </Link>
             Products{" "}
           </h2>
-          <Form onSubmit={categoryChangeHandler}>
-            <Form.Group controlId="category" className="">
-              <Form.Label>Type</Form.Label>
-              <Form.Select
-                aria-label="Default select example"
-                onChange={(e) => setUrlCategory(e.target.value)}
-              >
-                <option value="">all category</option>
-                <option value="food">Food</option>
-                <option value="drink">Drink</option>
-              </Form.Select>
-            </Form.Group>
-            <Button type="submit" variant="primary">
-              apply filter
-            </Button>
-          </Form>
+          <div>
+            <Form onSubmit={categoryChangeHandler}>
+              <Form.Group controlId="category" className="w-25">
+                <Form.Label>Type</Form.Label>
+                <Form.Select
+                  aria-label="Default select example"
+                  onChange={(e) => setUrlCategory(e.target.value)}
+                >
+                  <option value="">all category</option>
+                  <option value="food">Food</option>
+                  <option value="drink">Drink</option>
+                </Form.Select>
+              </Form.Group>
+              <Button type="submit" variant="primary" className="mt-1">
+                apply filter
+              </Button>
+            </Form>
+          </div>
         </Col>
       </Row>
       {isLoading ? (
@@ -116,23 +119,25 @@ const ProductList = () => {
                 </td>
                 <td>
                   <LinkContainer to={`/admin/product/${product._id}`}>
-                    <Button variant="light" className="btn-sm">
+                    <Button
+                      variant="secondary"
+                      className="btn-sm  text-center mx-1"
+                    >
                       <FaEdit />
                     </Button>
                   </LinkContainer>
                   <Button
                     variant="danger"
-                    className="btn-sm"
+                    className="btn-sm  text-center mx-1"
                     onClick={() => deleteHandler(product._id)}
                   >
                     <FaTrash style={{ color: "white" }} />
                   </Button>
                   <Button
-                    variant="info"
-                    className="btn-sm"
+                    className="btn-sm text-center mx-1"
                     onClick={() => updateStatusHandler(product._id)}
                   >
-                    <FaTrash style={{ color: "yellow" }} />
+                    <ImBlocked style={{ color: "yellow" }} />
                   </Button>
                 </td>
               </tr>

@@ -39,15 +39,20 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         body: { ...order },
       }),
     }),
+
+    getOrderBYorderNumber: builder.query({
+      query: (orderNumber) => ({
+        url: `${ORDER_URL}/orderNumber/${orderNumber}`,
+      }),
+    }),
   }),
 })
 
 export const {
   useAddOrderItemsMutation,
   useGetOrderDetailByIdQuery,
-
   usePayOrderMutation,
-
+  useGetOrderBYorderNumberQuery,
   useGetMyOrdersQuery,
   useGetAllOrdersQuery,
   useUpdateOrderMutation,

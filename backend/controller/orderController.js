@@ -2,6 +2,12 @@ import asyncHandler from "express-async-handler"
 import Order from "../models/orderModel.js"
 import { generateRandom4DigitNumber } from "../utils/generateOrderNumber.js"
 
+function isFourDigitNumber(str) {
+  // Regular expression to match a 4-digit number
+  const fourDigitNumberPattern = /^\d{4}$/
+  return fourDigitNumberPattern.test(str)
+}
+
 const addOrderItems = asyncHandler(async (req, res) => {
   const { orderItems, owner, phoneNumber, ariveTime, totalPrice } = req.body
 
@@ -117,7 +123,15 @@ const updateOrder = asyncHandler(async (req, res) => {
 })
 
 const getorderbyorderNumber = asyncHandler(async (req, res) => {
-  const order = await Order.findOne({ orderNumber: req.params.orderNumber })
+  let order
+  console.log(req.params)
+  if (isFourDigitNumber(req.params.orderNumber)) {
+    order = await Order.findOne({ orderNumber: req.params.orderNumber })
+  } else {
+    res.status(404)
+    throw new Error("enter correct format number")
+  }
+
   if (!order) {
     res.status(404)
     throw new Error("Order not found")

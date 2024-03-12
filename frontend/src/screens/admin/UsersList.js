@@ -14,7 +14,7 @@ import { FaArrowLeft } from "react-icons/fa"
 const UserList = () => {
   const { data: users, isLoading, error, refetch } = useGetUsersQuery()
 
-  const [deleteUser, { isLoading: loadingDelete, error: loadingError }] =
+  const [deleteUser, { isLoading: loadingDelete, error: deleteError }] =
     useDeleteUserMutation()
 
   const deleteHandler = async (id) => {
@@ -31,6 +31,10 @@ const UserList = () => {
 
   return (
     <>
+      {loadingDelete && <Loader />}
+      {deleteError && (
+        <Message variant="danger">{deleteError.data.message}</Message>
+      )}
       <Row>
         <Col>
           <h2>

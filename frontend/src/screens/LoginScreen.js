@@ -18,7 +18,6 @@ const LoginScreen = () => {
   const [login, { isLoading }] = useLoginMutation()
 
   const { userInfo } = useSelector((state) => state.auth)
-  console.log(userInfo)
 
   const { search } = useLocation()
   const sp = new URLSearchParams(search)
@@ -70,7 +69,7 @@ const LoginScreen = () => {
         </Button>
         {isLoading && <Loader />}
 
-        <Row className="py-3">
+        {/* <Row className="py-3">
           <Col>
             if you don't have an account?
             <Link
@@ -78,6 +77,13 @@ const LoginScreen = () => {
             >
               {" "}
               Register
+            </Link>
+          </Col>
+        </Row> */}
+        <Row className="py-1">
+          <Col>
+            <Link to={"/forgotpassword"}>
+              <strong>Forgot Password?</strong>
             </Link>
           </Col>
         </Row>

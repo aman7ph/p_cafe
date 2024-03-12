@@ -3,9 +3,10 @@ import { FaUser, FaShoppingCart } from "react-icons/fa"
 import { LinkContainer } from "react-router-bootstrap"
 import { useSelector, useDispatch } from "react-redux"
 import { logout } from "../redux/slices/authSlice"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { useLogoutMutation } from "../redux/slices/userApiSlice"
 import SearchBox from "./SearchBox"
+import SearchOrder from "./SearchOrder"
 import { GiMeal } from "react-icons/gi"
 
 const Header = () => {
@@ -13,6 +14,7 @@ const Header = () => {
   const user = useSelector((state) => state.auth.userInfo)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const [logoutFromserver] = useLogoutMutation()
 
   const logoutHandler = async () => {
@@ -42,7 +44,13 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              {!user && <SearchBox />}
+              {!user && location.pathname === "/menu" ? (
+                <SearchBox />
+              ) : !user && location.pathname === "/" ? (
+                <SearchOrder />
+              ) : (
+                <SearchOrder />
+              )}
               {!user && (
                 <LinkContainer to="/">
                   <Nav.Link>
@@ -91,7 +99,7 @@ const Header = () => {
                   </Nav.Link>
                 </LinkContainer>
               )}
-              {user && user.role === "admin" && (
+              {/* {user && user.role === "admin" && (
                 <NavDropdown title="Admin" id="adminmenu">
                   <LinkContainer to="/admin/userlist">
                     <NavDropdown.Item>Users</NavDropdown.Item>
@@ -109,7 +117,7 @@ const Header = () => {
                     <NavDropdown.Item>Materials</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
-              )}
+              )} */}
             </Nav>
           </Navbar.Collapse>
         </Container>

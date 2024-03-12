@@ -52,3 +52,9 @@ app.use(errorHandler)
 app.listen(port, () => {
   console.log(`server runing on port ${port}`)
 })
+
+process.on("unhandledRejection", (err, promise) => {
+  console.log(`Unhandle rejection......`)
+  console.log(`Logged Error: ${err}`)
+  server.close(() => process.exit(1))
+})

@@ -27,28 +27,10 @@ const Dashbord = () => {
         <div className="d-flex flex-column ">
           <SplitButton title="Product" actions={productActions} />
           <SplitButton title="Order" actions={orderActions} />
-
           <SplitButton title="Materials" actions={materialActions} />
           <SplitButton title="Promotion" actions={promotionActions} />
           <SplitButton title="Feedback" actions={feedbackActions} />
         </div>
-        {/*    <NavDropdown title="Admin" id="adminmenu">
-                  <LinkContainer to="/admin/userlist">
-                    <NavDropdown.Item>Users</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/productlist">
-                    <NavDropdown.Item>Products</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/orderlist">
-                    <NavDropdown.Item>Orders</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/promotionlist">
-                    <NavDropdown.Item>promotion</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/materiallist">
-                    <NavDropdown.Item>Materials</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown> */}
       </div>
       <div>
         <p>

@@ -50,6 +50,7 @@ const ProductUpdateScreen = () => {
         id,
         name,
         price,
+        image,
         category,
         description,
       })

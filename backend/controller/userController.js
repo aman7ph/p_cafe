@@ -2,6 +2,8 @@ import asyncHandler from "express-async-handler"
 import User from "./../models/userModel.js"
 import bcrypt from "bcrypt"
 import generateToken from "../utils/generateToken.js"
+import sendEmail from "../utils/email.js"
+import crypto from "crypto"
 
 const register = asyncHandler(async (req, res, next) => {
   const { name, password, email, role } = req.body
@@ -153,6 +155,64 @@ const updateUser = asyncHandler(async (req, res, next) => {
     throw new Error("User not found")
   }
 })
+const forgotePassword = asyncHandler(async (req, res, next) => {
+  console.log("req.............body")
+  const user = await User.findOne({
+    email: req.body.email,
+  })
+  if (!user) {
+    res.status(404)
+    throw new Error("User not found")
+  }
+  const resetToken = user.createPasswordResetToken()
+  await user.save({ validateBeforeSave: false })
+  const resetUrl = `${req.protocol}://localhost:3000/reset/${resetToken}`
+  const message = `Forgot your password? submit a put request with your new password : ${resetUrl}\nIf you didn't forget your password, please ignore this email!`
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "Your password reset token (valid for 10 min)",
+      message,
+    })
+    res.status(200).json({ message: "Token sent to email!" })
+  } catch (error) {
+    user.passwordResetToken = undefined
+    user.passwordResetExpiers = undefined
+    await user.save({ validateBeforeSave: false })
+    console.log(error)
+    res.status(500)
+    throw new Error("There was an error sending the email")
+  }
+})
+const reset = asyncHandler(async (req, res, next) => {
+  if (!req.body.password) {
+    res.status(400)
+    throw new Error("Please provide a new password")
+  }
+
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex")
+
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpiers: { $gt: Date.now() },
+  })
+
+  if (!user) {
+    res.status(400)
+    throw new Error("Token is invalid or has expired")
+  }
+  const salt = await bcrypt.genSalt(10)
+  const hashedPassword = await bcrypt.hash(req.body.password, salt)
+  user.password = hashedPassword
+  user.passwordResetToken = undefined
+  user.passwordResetExpiers = undefined
+  await user.save()
+  generateToken(res, user._id)
+  res.status(200).json({ message: "password reset successfully" })
+})
 
 export {
   register,
@@ -164,4 +224,6 @@ export {
   getUserById,
   deleteUser,
   updateUser,
+  forgotePassword,
+  reset,
 }

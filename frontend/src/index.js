@@ -20,7 +20,7 @@ import Home from "./screens/Home"
 import ProductDetail from "./screens/ProductDetail"
 import CartScreen from "./screens/CartScreen"
 import LoginScreen from "./screens/LoginScreen"
-import RegisterScreen from "./screens/RegisterScreen"
+//import RegisterScreen from "./screens/RegisterScreen"
 
 import PrivateRouter from "./components/PrivateRouter"
 
@@ -41,6 +41,9 @@ import MaterialList from "./screens/admin/MaterialList"
 import CreateMaterialsScreen from "./screens/admin/CreateMaterialScreen"
 import FeedbackList from "./screens/admin/FeedbackList"
 import FeedbackDetail from "./screens/admin/FeedbackDetail"
+import OrderNumber from "./screens/OrderNumber"
+import ForgotePassword from "./screens/Forgotepassword"
+import Reset from "./screens/Reset"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -58,8 +61,11 @@ const router = createBrowserRouter(
       <Route path="/product/:id" element={<ProductDetail />} />
       <Route path="/cart" element={<CartScreen />} />
       <Route path="/login" element={<LoginScreen />} />
-      <Route path="/register" element={<RegisterScreen />} />
+      {/* <Route path="/register" element={<RegisterScreen />} /> */}
+      <Route path="/forgotpassword" element={<ForgotePassword />} />
+      <Route path="/reset/:token" element={<Reset />} />
       <Route path="/order/:id" element={<OrderScreen />} />
+      <Route path="/order/orderNumber/:orderNumber" element={<OrderNumber />} />
 
       <Route path="" element={<PrivateRouter />}>
         <Route path="/profile" element={<ProfileScreen />} />

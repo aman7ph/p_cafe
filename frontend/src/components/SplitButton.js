@@ -4,8 +4,10 @@ import Dropdown from "react-bootstrap/Dropdown"
 
 function SplitButton({ title, actions }) {
   return (
-    <Dropdown as={ButtonGroup}>
-      <Button variant="success">{title}</Button>
+    <Dropdown as={ButtonGroup} className="mt-2">
+      <Button variant="success" className="">
+        <strong>{title}</strong>
+      </Button>
 
       <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
 
