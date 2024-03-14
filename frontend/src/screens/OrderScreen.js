@@ -1,45 +1,46 @@
-import { Link, useParams } from "react-router-dom"
-import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap"
-import { useDispatch, useSelector } from "react-redux"
-import { setCart } from "../redux/slices/cartSlice"
-import dateFormater from "../utils/dateFormater"
+import { Link, useParams } from "react-router-dom";
+import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { setCart } from "../redux/slices/cartSlice";
+import dateFormater from "../utils/dateFormater";
 import {
   useGetOrderDetailByIdQuery,
   usePayOrderMutation,
-} from "./../redux/slices/orderApiSlice"
-import Loader from "../components/Loader"
-import Message from "../components/Message"
+} from "./../redux/slices/orderApiSlice";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 
-import { toast } from "react-toastify"
-import { FaArrowLeft } from "react-icons/fa"
+import { toast } from "react-toastify";
+import { FaArrowLeft } from "react-icons/fa";
 
 const OrderScreen = () => {
-  const { id } = useParams()
-  const dispatch = useDispatch()
+  const { id } = useParams();
+  const dispatch = useDispatch();
 
   const {
     data: order,
     refetch,
     isLoading,
     error,
-  } = useGetOrderDetailByIdQuery(id)
-  const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation()
+  } = useGetOrderDetailByIdQuery(id);
+  const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
 
-  const { userInfo } = useSelector((state) => state.auth)
+  const { userInfo } = useSelector((state) => state.auth);
 
   async function onApproveTest() {
     if (window.confirm("Are you sure?")) {
       const { data } = await payOrder({
         id,
         details: { id: "admin", status: "approved", payer: {} },
-      })
+      });
       if (data) {
-        toast.success("Order paid")
-        refetch()
+        toast.success("Order paid");
+        refetch();
       }
     }
   }
 
+  console.log(order);
   const updateOederHandler = () => {
     localStorage.setItem(
       "cart",
@@ -51,7 +52,7 @@ const OrderScreen = () => {
         ariveTime: order.ariveTime,
         totalPrice: order.totalPrice,
       })
-    )
+    );
     dispatch(
       setCart({
         id: order._id,
@@ -61,10 +62,10 @@ const OrderScreen = () => {
         ariveTime: order.ariveTime,
         totalPrice: order.totalPrice,
       })
-    )
-    window.location.reload()
-  }
-  console.log(order)
+    );
+    window.location.reload();
+  };
+  console.log(order);
   return isLoading ? (
     <Loader />
   ) : error ? (
@@ -183,7 +184,7 @@ const OrderScreen = () => {
                             style={{ marginBottom: "10px" }}
                             onClick={onApproveTest}
                           >
-                            Order Paid
+                            Approve
                           </Button>
                         </div>
                       )}
@@ -206,7 +207,7 @@ const OrderScreen = () => {
         </Col>
       </Row>
     </>
-  )
-}
+  );
+};
 
-export default OrderScreen
+export default OrderScreen;

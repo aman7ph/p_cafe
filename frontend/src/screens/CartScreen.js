@@ -1,39 +1,50 @@
-import { Link, useNavigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { Row, ListGroup, Col, Image, Form, Button, Card } from "react-bootstrap"
-import Message from "../components/Message"
-import { addToCart, removeFromCart } from "./../redux/slices/cartSlice"
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Row,
+  ListGroup,
+  Col,
+  Image,
+  Form,
+  Button,
+  Card,
+} from "react-bootstrap";
+import Message from "../components/Message";
+import { addToCart, removeFromCart } from "./../redux/slices/cartSlice";
 
-import { FaTrash } from "react-icons/fa"
+import { FaTrash } from "react-icons/fa";
 import {
   useAddOrderItemsMutation,
   useUpdateOrderMutation,
-} from "./../redux/slices/orderApiSlice"
-import { clearCart } from "../redux/slices/cartSlice"
-import Loader from "../components/Loader"
-import { toast } from "react-toastify"
-import { useEffect, useState } from "react"
+} from "./../redux/slices/orderApiSlice";
+import { clearCart } from "../redux/slices/cartSlice";
+import Loader from "../components/Loader";
+import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 
 const CartScreen = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const [name, setName] = useState("")
-  const [phone, setPhone] = useState("")
-  const [ariveTime, setAriveTime] = useState("")
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [ariveTime, setAriveTime] = useState("");
+  const [result, setResult] = useState("");
 
-  const cart = useSelector((state) => state.cart)
-  const { cartItems } = cart
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
 
   const addToCartHandler = (product, qty) => {
-    dispatch(addToCart({ ...product, qty }))
-  }
+    dispatch(addToCart({ ...product, qty }));
+  };
   const removeFromCartHandler = (id) => {
-    dispatch(removeFromCart(id))
-  }
+    dispatch(removeFromCart(id));
+  };
 
-  const [addOrderItems, { isLoading, error }] = useAddOrderItemsMutation()
-  const [updateOrder, { isLoading: updateLoading }] = useUpdateOrderMutation()
+  const [addOrderItems, { isLoading, error }] = useAddOrderItemsMutation();
+  const [updateOrder, { isLoading: updateLoading }] = useUpdateOrderMutation();
+
   const PlaceOrderHandler = async () => {
+    if (!checkTimeRange()) return toast.error(result);
     try {
       const res = await addOrderItems({
         orderItems: cart.cartItems,
@@ -41,15 +52,15 @@ const CartScreen = () => {
         phoneNumber: phone,
         ariveTime,
         totalPrice: cart.totalPrice,
-      }).unwrap()
+      }).unwrap();
 
-      dispatch(clearCart())
-      toast.success("Order Placed Successfully")
-      navigate(`/order/${res._id}`)
+      dispatch(clearCart());
+      toast.success("Order Placed Successfully");
+      navigate(`/order/${res._id}`);
     } catch (error) {
-      toast.error(error?.data?.message || error.error)
+      toast.error(error?.data?.message || error.error);
     }
-  }
+  };
   const updateOederHandler = async () => {
     try {
       await updateOrder({
@@ -59,23 +70,45 @@ const CartScreen = () => {
         phoneNumber: phone,
         ariveTime,
         totalPrice: cart.totalPrice,
-      }).unwrap()
+      }).unwrap();
 
-      dispatch(clearCart())
-      toast.success("Order Updated Successfully")
-      navigate(`/`)
+      dispatch(clearCart());
+      toast.success("Order Updated Successfully");
+      navigate(`/`);
     } catch (error) {
-      toast.error(error?.data?.message || error.error)
+      toast.error(error?.data?.message || error.error);
     }
-  }
+  };
 
   useEffect(() => {
     if (cart.id) {
-      setName(cart.owner)
-      setPhone(cart.phoneNumber)
-      setAriveTime(cart.ariveTime)
+      setName(cart.owner);
+      setPhone(cart.phoneNumber);
+      setAriveTime(cart.ariveTime);
     }
-  }, [cart.id, cart.owner, cart.phoneNumber, cart.ariveTime])
+  }, [cart.id, cart.owner, cart.phoneNumber, cart.ariveTime]);
+
+  const checkTimeRange = () => {
+    const currentTime = new Date();
+    const currentHours = currentTime.getHours();
+    const currentMinutes = currentTime.getMinutes();
+
+    const currentTotalMinutes = currentHours * 60 + currentMinutes;
+
+    const selectedHours = parseInt(ariveTime.substring(0, 2));
+    const selectedMinutes = parseInt(ariveTime.substring(3));
+
+    const selectedTotalMinutes = selectedHours * 60 + selectedMinutes;
+
+    const timeDifference = selectedTotalMinutes - currentTotalMinutes;
+
+    if (timeDifference >= 0 && timeDifference <= 480) {
+      return true;
+    } else {
+      setResult("Error: Selected time is not within 8 hours from now.");
+      return false;
+    }
+  };
 
   return (
     <Row>
@@ -111,7 +144,7 @@ const CartScreen = () => {
                             <option key={el + 1} value={el + 1}>
                               {el + 1}
                             </option>
-                          )
+                          );
                         })}
                       </Form.Control>
                     </Col>
@@ -126,7 +159,7 @@ const CartScreen = () => {
                     </Col>
                   </Row>
                 </ListGroup.Item>
-              )
+              );
             })}
           </ListGroup>
         )}
@@ -169,7 +202,7 @@ const CartScreen = () => {
                 <Col>ariveTime</Col>
                 <Col>
                   <Form.Control
-                    type="date"
+                    type="time"
                     value={ariveTime}
                     onChange={(e) => setAriveTime(e.target.value)}
                   ></Form.Control>
@@ -221,7 +254,7 @@ const CartScreen = () => {
         </Card>
       </Col>
     </Row>
-  )
-}
+  );
+};
 
-export default CartScreen
+export default CartScreen;

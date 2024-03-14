@@ -14,7 +14,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import Paginate from "../../components/Paginate";
 import { useState } from "react";
 
-const ProductList = () => {
+const Report = () => {
   const navigate = useNavigate();
   const { pageNumber, category } = useParams();
   const [urlcategory, setUrlCategory] = useState(category || "");
@@ -150,4 +150,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default Report;

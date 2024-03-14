@@ -1,17 +1,38 @@
-import { FaTimes, FaArrowLeft } from "react-icons/fa"
-import { ImCheckmark } from "react-icons/im"
-import Loader from "../../components/Loader"
-import Message from "../../components/Message"
-import { useParams, Link } from "react-router-dom"
-import { LinkContainer } from "react-router-bootstrap"
-import { Table, Button } from "react-bootstrap"
-import { useGetAllOrdersQuery } from "../../redux/slices/orderApiSlice"
-import Paginate from "../../components/Paginate"
+import { FaTimes, FaArrowLeft } from "react-icons/fa";
+import { ImCheckmark } from "react-icons/im";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
+import { useParams, Link } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
+import { Table, Button, ListGroup, Row, Col } from "react-bootstrap";
+import { toast } from "react-toastify";
+import {
+  useGetAllOrdersQuery,
+  usePayOrderMutation,
+} from "../../redux/slices/orderApiSlice";
+import Paginate from "../../components/Paginate";
 
 const OrderListScreen = () => {
-  const { pageNumber } = useParams()
-  const { data, isLoading, error } = useGetAllOrdersQuery({ pageNumber })
-  console.log(data)
+  const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+  const { pageNumber } = useParams();
+  const { data, isLoading, error, refetch } = useGetAllOrdersQuery({
+    pageNumber,
+  });
+  console.log(data);
+
+  async function onApproveTest(id) {
+    if (window.confirm("Are you sure?")) {
+      const { data } = await payOrder({
+        id,
+        details: { id: "admin", status: "approved", payer: {} },
+      });
+      if (data) {
+        toast.success("Order paid");
+        refetch();
+      }
+    }
+  }
+
   return (
     <>
       <h2>
@@ -31,8 +52,8 @@ const OrderListScreen = () => {
             <tr>
               <th>ORDER_no</th>
               <th>USER</th>
-              <th>DATE</th>
-              <th>TOTAL</th>
+              <th>List</th>
+              <th>TOTAL PRICE</th>
               <th>PAID</th>
               <th></th>
             </tr>
@@ -42,7 +63,19 @@ const OrderListScreen = () => {
               <tr key={order._id}>
                 <td>{order.orderNumber || "1234"}</td>
                 <td>{order.owner}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
+                <td>
+                  {" "}
+                  {order.orderItems.map((item, index) => (
+                    <ListGroup.Item key={index}>
+                      <div>
+                        <p>
+                          {item.name}
+                          <strong>{`(${item.qty})`}</strong>
+                        </p>
+                      </div>
+                    </ListGroup.Item>
+                  ))}
+                </td>
                 <td>{order.totalPrice}</td>
                 <td>
                   {order.isPaid ? (
@@ -53,10 +86,23 @@ const OrderListScreen = () => {
                 </td>
                 <td>
                   <LinkContainer to={`/order/${order._id}`}>
-                    <Button variant="light" className="btn-sm">
+                    <Button variant="dark" className="btn-sm p-2">
                       Details
                     </Button>
                   </LinkContainer>
+                </td>
+                <td>
+                  <div>
+                    {!order.isPaid && (
+                      <Button
+                        variant="success"
+                        style={{ marginBottom: "10px" }}
+                        onClick={() => onApproveTest(order._id)}
+                      >
+                        Approve
+                      </Button>
+                    )}{" "}
+                  </div>
                 </td>
               </tr>
             ))}
@@ -70,7 +116,7 @@ const OrderListScreen = () => {
         link="/admin/orderlist"
       />
     </>
-  )
-}
+  );
+};
 
-export default OrderListScreen
+export default OrderListScreen;
