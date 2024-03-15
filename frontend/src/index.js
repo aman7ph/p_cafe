@@ -1,50 +1,51 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import React from "react"
+import ReactDOM from "react-dom/client"
 import {
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
   Route,
-} from "react-router-dom";
-import store from "./redux/store";
-import { Provider } from "react-redux";
+} from "react-router-dom"
+import store from "./redux/store"
+import { Provider } from "react-redux"
 
-import "./assets/styles/bootstrap.custom.css";
-import "./assets/styles/index.css";
+import "./assets/styles/bootstrap.custom.css"
+import "./assets/styles/index.css"
 
-import reportWebVitals from "./reportWebVitals";
+import reportWebVitals from "./reportWebVitals"
 
-import App from "./App";
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import Home from "./screens/Home";
-import ProductDetail from "./screens/ProductDetail";
-import CartScreen from "./screens/CartScreen";
-import LoginScreen from "./screens/LoginScreen";
+import App from "./App"
+import { PayPalScriptProvider } from "@paypal/react-paypal-js"
+import Home from "./screens/Home"
+import ProductDetail from "./screens/ProductDetail"
+import CartScreen from "./screens/CartScreen"
+import LoginScreen from "./screens/LoginScreen"
 //import RegisterScreen from "./screens/RegisterScreen"
 
-import PrivateRouter from "./components/PrivateRouter";
+import PrivateRouter from "./components/PrivateRouter"
 
-import OrderScreen from "./screens/OrderScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-import AdminRouter from "./components/AdminRoute";
-import OrderListScreen from "./screens/admin/OrderListScreen";
-import ProductList from "./screens/admin/ProductList";
-import Report from "./screens/admin/Report";
-import ProductUpdateScreen from "./screens/admin/ProductUpdateScreen";
-import CreateProductScreen from "./screens/admin/CreateProductScreen";
-import UsersList from "./screens/admin/UsersList";
-import UserEditScreen from "./screens/admin/UserEditScreen";
-import MenuPage from "./screens/MenuPage";
-import PromotionListScreen from "./screens/admin/PromotionListScreen";
-import PromotionUpdateScreen from "./screens/admin/UpdatePromootionScreen";
-import CreatePromotionScreen from "./screens/admin/CreatePromotionScreen";
-import MaterialList from "./screens/admin/MaterialList";
-import CreateMaterialsScreen from "./screens/admin/CreateMaterialScreen";
-import FeedbackList from "./screens/admin/FeedbackList";
-import FeedbackDetail from "./screens/admin/FeedbackDetail";
-import OrderNumber from "./screens/OrderNumber";
-import ForgotePassword from "./screens/Forgotepassword";
-import Reset from "./screens/Reset";
+import OrderScreen from "./screens/OrderScreen"
+import ProfileScreen from "./screens/ProfileScreen"
+import AdminRouter from "./components/AdminRoute"
+import OrderListScreen from "./screens/admin/OrderListScreen"
+import ProductList from "./screens/admin/ProductList"
+import Report from "./screens/admin/Report"
+import ProductUpdateScreen from "./screens/admin/ProductUpdateScreen"
+import CreateProductScreen from "./screens/admin/CreateProductScreen"
+import UsersList from "./screens/admin/UsersList"
+import UserEditScreen from "./screens/admin/UserEditScreen"
+import MenuPage from "./screens/MenuPage"
+import PromotionListScreen from "./screens/admin/PromotionListScreen"
+import PromotionUpdateScreen from "./screens/admin/UpdatePromootionScreen"
+import CreatePromotionScreen from "./screens/admin/CreatePromotionScreen"
+import MaterialList from "./screens/admin/MaterialList"
+import CreateMaterialsScreen from "./screens/admin/CreateMaterialScreen"
+import FeedbackList from "./screens/admin/FeedbackList"
+import FeedbackDetail from "./screens/admin/FeedbackDetail"
+import OrderNumber from "./screens/OrderNumber"
+import PaiedOrderlist from "./screens/admin/PaiedOrderlist"
+import ForgotePassword from "./screens/Forgotepassword"
+import Reset from "./screens/Reset"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -82,6 +83,11 @@ const router = createBrowserRouter(
           element={<MaterialList />}
         />
         <Route path="/admin/orderlist" element={<OrderListScreen />} />
+        <Route path="/admin/paiedorderlist" element={<PaiedOrderlist />} />
+        <Route
+          path="/admin/paiedorderlist/:pageNumber"
+          element={<PaiedOrderlist />}
+        />
         <Route
           path="/admin/orderlist/:pageNumber"
           element={<OrderListScreen />}
@@ -119,9 +125,9 @@ const router = createBrowserRouter(
       </Route>
     </Route>
   )
-);
+)
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById("root"))
 root.render(
   <React.StrictMode>
     <Provider store={store}>
@@ -130,6 +136,6 @@ root.render(
       </PayPalScriptProvider>
     </Provider>
   </React.StrictMode>
-);
+)
 
-reportWebVitals();
+reportWebVitals()

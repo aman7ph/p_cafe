@@ -1,64 +1,67 @@
-import { FaEdit, FaTrash, FaArrowLeft } from "react-icons/fa";
-import { ImBlocked } from "react-icons/im";
-import Loader from "../../components/Loader";
-import Message from "../../components/Message";
-import { LinkContainer } from "react-router-bootstrap";
-import { Table, Button, Row, Col, Form } from "react-bootstrap";
+import { FaArrowLeft } from "react-icons/fa"
+import Loader from "../../components/Loader"
+import Message from "../../components/Message"
+import { Table, Button, Row, Col } from "react-bootstrap"
+
 import {
-  useGetAllProductsForAdminQuery,
-  useDeleteProductMutation,
-  useGetUpdateStatusMutation,
-} from "../../redux/slices/productApiSlice";
-import { toast } from "react-toastify";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import Paginate from "../../components/Paginate";
-import { useState } from "react";
+  useDailyQuery,
+  // useMonthlyQuery,
+  // useYearlyQuery,
+  // useWeaklyQuery,
+} from "../../redux/slices/reportApiSlice"
+//import { toast } from "react-toastify"
+import { Link } from "react-router-dom"
+//import Paginate from "../../components/Paginate"
+import { useState } from "react"
 
 const Report = () => {
-  const navigate = useNavigate();
-  const { pageNumber, category } = useParams();
-  const [urlcategory, setUrlCategory] = useState(category || "");
+  // const [startDate, setStartDate] = useState("")
+  // const [endDate, setEndDate] = useState("")
+  const [reportType, setReportType] = useState("") // Initial state for daily report
+  // Initial state for daily report
 
-  let { data, isLoading, error, refetch } = useGetAllProductsForAdminQuery({
-    pageNumber,
-    category,
-  });
+  // Destructure data, isLoading, error, refetch from relevant hook based on reportType
+  let { data, isLoading, error, refetch } = useDailyQuery({
+    type: reportType,
+  }) // Default to daily query
 
-  const [updateProductStatus] = useGetUpdateStatusMutation();
+  const todayhandler = () => {
+    setReportType("")
+    // Fetch data for daily report using useDailyQuery
+    refetch({ type: "" }) // Pass required parameters
+  }
+  const weaklyHandler = () => {
+    setReportType("week")
 
-  const [deleteProduct, { isLoading: loadingDelete, error: loadingError }] =
-    useDeleteProductMutation();
+    refetch({ type: "week" }) // Pass required parameters
+  }
 
-  const deleteHandler = async (id) => {
-    if (window.confirm("Are you sure?")) {
-      try {
-        await deleteProduct(id);
-        refetch();
-        toast.success("Product deleted");
-      } catch (error) {
-        toast.error(error?.data?.message || error.error);
-      }
-    }
-  };
-  const updateStatusHandler = async (id) => {
-    try {
-      await updateProductStatus(id);
-      refetch();
-      toast.success("Product status updated");
-    } catch (error) {
-      toast.error(error?.data?.message || error.error);
-    }
-  };
+  const monthlyHandler = () => {
+    setReportType("month")
+    // Fetch data for monthly report using useMonthlyQuery
+    refetch({ type: "month" }) // Pass required parameters
+  }
 
-  const categoryChangeHandler = async (e) => {
-    e.preventDefault();
-    if (urlcategory) {
-      navigate(`/admin/category/${urlcategory}`);
-    } else {
-      navigate("/admin/productlist");
-    }
-  };
+  const yearlyHandler = () => {
+    setReportType("year")
+    // Fetch data for yearly report using useYearlyQuery
+    refetch({ type: "year" }) // Pass required parameters
+  }
 
+  // const spesficHandler = (e) => {
+  //   e.preventDefault()
+  //   setReportType(`spacific/${startDate}`)
+  //   console.log(startDate)
+  //   setEndDate("")
+  //   refetch({ type: `spacific/${startDate}` })
+  // }
+  // const rangeHandler = (e) => {
+  //   e.preventDefault()
+  //   setReportType(`range/${startDate}/${endDate}`)
+
+  //   refetch({ type: `range/${startDate}/${endDate}` })
+  // }
+  console.log(data)
   return (
     <>
       <Row>
@@ -67,28 +70,30 @@ const Report = () => {
             <Link to="/" className="btn btn-light mx-4">
               <FaArrowLeft /> go back
             </Link>
-            Products{" "}
+            Report
           </h2>
-          <div>
-            <Form onSubmit={categoryChangeHandler}>
-              <Form.Group controlId="category" className="w-25">
-                <Form.Label>Type</Form.Label>
-                <Form.Select
-                  aria-label="Default select example"
-                  onChange={(e) => setUrlCategory(e.target.value)}
-                >
-                  <option value="">all category</option>
-                  <option value="food">Food</option>
-                  <option value="drink">Drink</option>
-                </Form.Select>
-              </Form.Group>
-              <Button type="submit" variant="primary" className="mt-1">
-                apply filter
-              </Button>
-            </Form>
-          </div>
         </Col>
       </Row>
+      <Row>
+        <Col className="d-flex ">
+          <Button className="mx-1" onClick={todayhandler}>
+            today
+          </Button>
+          <Button className="mx-1" onClick={weaklyHandler}>
+            weakly
+          </Button>
+          <Button className="mx-1" onClick={monthlyHandler}>
+            monthly
+          </Button>
+          <Button className="mx-1" onClick={yearlyHandler}>
+            yearly
+          </Button>
+        </Col>
+      </Row>
+      <h3 className="mt-2 ">
+        TOTAL_PRICE
+        <span className="mx-2 text-success">{data?.totalSoldPrice}</span>
+      </h3>
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -98,56 +103,23 @@ const Report = () => {
           <thead>
             <tr>
               <th>NAME</th>
-              <th>PRICE</th>
-              <th>CATAGORY</th>
-              <th>STATUS</th>
-              <th></th>
+              <th>SOLD_ITEMS</th>
+              <th>TOTAL_PRICE_SOLD_ITEMS</th>
             </tr>
           </thead>
           <tbody>
-            {data.products.map((product) => (
-              <tr key={product._id}>
-                <td>{product.name}</td>
-                <td>{product.price}</td>
-                <td>{product.category}</td>
-                <td>
-                  {product.status ? (
-                    <p style={{ color: "green" }}>Available</p>
-                  ) : (
-                    <p style={{ color: "red" }}>Not Available</p>
-                  )}
-                </td>
-                <td>
-                  <LinkContainer to={`/admin/product/${product._id}`}>
-                    <Button
-                      variant="secondary"
-                      className="btn-sm  text-center mx-1"
-                    >
-                      <FaEdit />
-                    </Button>
-                  </LinkContainer>
-                  <Button
-                    variant="danger"
-                    className="btn-sm  text-center mx-1"
-                    onClick={() => deleteHandler(product._id)}
-                  >
-                    <FaTrash style={{ color: "white" }} />
-                  </Button>
-                  <Button
-                    className="btn-sm text-center mx-1"
-                    onClick={() => updateStatusHandler(product._id)}
-                  >
-                    <ImBlocked style={{ color: "yellow" }} />
-                  </Button>
-                </td>
+            {data.itemsSold.map((product, i) => (
+              <tr key={i}>
+                <td>{product.itemName}</td>
+                <td>{product.totalSold}</td>
+                <td>{product.totalPriceSold}</td>
               </tr>
             ))}
           </tbody>
         </Table>
       )}
-      <Paginate page={data?.page} pages={data?.pages} isAdmin={true} />
     </>
-  );
-};
+  )
+}
 
-export default Report;
+export default Report

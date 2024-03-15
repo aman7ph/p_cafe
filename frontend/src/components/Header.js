@@ -44,9 +44,9 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              {!user && location.pathname === "/menu" ? (
+              {!user && location.pathname !== "/cart" ? (
                 <SearchBox />
-              ) : !user && location.pathname === "/" ? (
+              ) : !user && location.pathname === "/cart" ? (
                 <SearchOrder />
               ) : (
                 <SearchOrder />
@@ -99,25 +99,6 @@ const Header = () => {
                   </Nav.Link>
                 </LinkContainer>
               )}
-              {/* {user && user.role === "admin" && (
-                <NavDropdown title="Admin" id="adminmenu">
-                  <LinkContainer to="/admin/userlist">
-                    <NavDropdown.Item>Users</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/productlist">
-                    <NavDropdown.Item>Products</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/orderlist">
-                    <NavDropdown.Item>Orders</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/promotionlist">
-                    <NavDropdown.Item>promotion</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/materiallist">
-                    <NavDropdown.Item>Materials</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
-              )} */}
             </Nav>
           </Navbar.Collapse>
         </Container>
