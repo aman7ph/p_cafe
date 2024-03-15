@@ -19,8 +19,7 @@ const FeedbackList = () => {
     pageNumber,
   })
 
-  const [deleteFeedback, { isLoading: loadingDelete, error: loadingError }] =
-    useDeleteFeedbackMutation()
+  const [deleteFeedback, { error: deleterror }] = useDeleteFeedbackMutation()
 
   const deleteHandler = async (id) => {
     if (window.confirm("Are you sure?")) {
@@ -49,8 +48,10 @@ const FeedbackList = () => {
       </Row>
       {isLoading ? (
         <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
+      ) : error || deleterror ? (
+        <Message variant="danger">
+          {error.data.message || deleterror.data.message}
+        </Message>
       ) : (
         <Table striped hover responsive className="table-sm">
           <thead>

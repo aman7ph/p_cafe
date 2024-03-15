@@ -14,12 +14,12 @@ const CreateProductScreen = () => {
   const navigate = useNavigate()
 
   const [name, setName] = useState("")
-  const [price, setPrice] = useState(0)
+  const [price, setPrice] = useState("")
   const [image, setImage] = useState("")
   const [description, setDescription] = useState("")
   const [category, setCategory] = useState("")
   const [createProduct, { isLoading, error }] = useCreateProductMutation()
-  const [uploadProductImage, { isLoading: uploadloading }] =
+  const [uploadProductImage, { error: uploaderror }] =
     useUploadProductImageMutation()
 
   const uploadFileHandler = async (e) => {
@@ -27,10 +27,8 @@ const CreateProductScreen = () => {
     console.log(e.target.files[0])
 
     formData.append("image", e.target.files[0])
-    console.log("form_data", formData)
     try {
       const res = await uploadProductImage(formData).unwrap()
-      console.log("responsssssssssssss", res)
       toast.success(res.message)
       setImage(res.image)
     } catch (err) {
@@ -45,7 +43,7 @@ const CreateProductScreen = () => {
         name,
         price,
         image,
-        category,
+        category: category || "food",
         description,
       })
       if (data) {
@@ -68,8 +66,10 @@ const CreateProductScreen = () => {
 
         {isLoading ? (
           <Loader />
-        ) : error ? (
-          <Message variant="danger">{error.message}</Message>
+        ) : error || uploaderror ? (
+          <Message variant="danger">
+            {error.data.message || uploaderror.data.message}
+          </Message>
         ) : (
           <Form onSubmit={submitHandler}>
             <Form.Group controlId="name">
@@ -77,6 +77,7 @@ const CreateProductScreen = () => {
               <Form.Control
                 type="text"
                 placeholder="Enter name"
+                required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -87,19 +88,17 @@ const CreateProductScreen = () => {
                 type="number"
                 placeholder="Enter price"
                 value={price}
-                onChange={(e) => setPrice(+e.target.value)}
+                min={1}
+                required
+                onChange={(e) => setPrice(e.target.value)}
               />
             </Form.Group>
             <Form.Group controlId="image" className="my-2">
               <Form.Label>Image</Form.Label>
-              {/* <Form.Control
-                type="text"
-                placeholder="Enter image"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-              />  */}
+
               <Form.Control
                 type="file"
+                required
                 label="choose file"
                 onChange={uploadFileHandler}
               ></Form.Control>
@@ -109,8 +108,12 @@ const CreateProductScreen = () => {
               <Form.Label>Category</Form.Label>
               <Form.Select
                 aria-label="Default select example"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                value={category || "food"}
+                required
+                onChange={(e) => {
+                  setCategory(e.target.value)
+                  console.log(e.target.value)
+                }}
               >
                 <option disabled>Select an option</option>
                 <option value="food">Food</option>

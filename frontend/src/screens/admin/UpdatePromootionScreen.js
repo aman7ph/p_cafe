@@ -22,18 +22,14 @@ const UpdatePromootionScreen = () => {
 
   const [updatePromotion, { isLoading: loadingUpdate }] =
     useUpdatePromotionMutation()
-  const [uploadProductImage, { isLoading: uploadloading }] =
+  const [uploadProductImage, { error: uploaderror }] =
     useUploadPromotionImageMutation()
 
   const uploadFileHandler = async (e) => {
     const formData = new FormData()
-    console.log(e.target.files[0])
-
     formData.append("promo", e.target.files[0])
-    console.log("form_data", formData)
     try {
       const res = await uploadProductImage(formData).unwrap()
-      console.log("responsssssssssssss", res)
       toast.success(res.message)
       setImage(res.image)
     } catch (err) {
@@ -58,10 +54,8 @@ const UpdatePromootionScreen = () => {
   }
 
   useEffect(() => {
-    console.log(data)
     if (data) {
       setName(data.promotion.name)
-
       setImage(data.promotion.image)
     }
   }, [data])
@@ -77,8 +71,10 @@ const UpdatePromootionScreen = () => {
         {loadingUpdate && <Loader />}
         {isLoading ? (
           <Loader />
-        ) : error ? (
-          <Message variant="danger">{error}</Message>
+        ) : error || uploaderror ? (
+          <Message variant="danger">
+            {error.data.message || uploaderror}
+          </Message>
         ) : (
           <Form onSubmit={submitHandler}>
             <Form.Group controlId="name">
@@ -93,12 +89,7 @@ const UpdatePromootionScreen = () => {
 
             <Form.Group controlId="image" className="my-2">
               <Form.Label>Image</Form.Label>
-              {/* <Form.Control
-                type="text"
-                placeholder="Enter image"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-              />  */}
+
               <Form.Control
                 type="file"
                 label="choose file"

@@ -26,7 +26,7 @@ const OrderNumber = () => {
     isLoading,
     error,
   } = useGetOrderBYorderNumberQuery(orderNumber)
-  const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation()
+  const [payOrder, { isLoading: loadingPay,error:payerror }] = usePayOrderMutation()
   console.log(useGetOrderBYorderNumberQuery(orderNumber))
 
   console.log(order)
@@ -70,12 +70,12 @@ const OrderNumber = () => {
   }
   useEffect(() => {
     refetch()
-  }, [])
+  }, [refetch])
 
   return isLoading ? (
     <Loader />
-  ) : error ? (
-    <Message variant="danger">{error.data.message}</Message>
+  ) : error||payerror ? (
+    <Message variant="danger">{error.data.message||payerror.data.message}</Message>
   ) : (
     <>
       <h2>
@@ -189,12 +189,17 @@ const OrderNumber = () => {
                 )}
                 {userInfo && !order.isPaid && (
                   <div>
+                  {loadingPay ? (
+                    <Loader />
+                  ) : (
                     <Button
+                      
                       style={{ marginBottom: "10px" }}
                       onClick={() => onApproveTest(order._id)}
                     >
-                      Order Paid
+                      Aprove
                     </Button>
+                  )}
                   </div>
                 )}
               </ListGroup.Item>

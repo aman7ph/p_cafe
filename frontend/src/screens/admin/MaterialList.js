@@ -10,13 +10,12 @@ import {
   useSubstractMaterialsMutation,
 } from "../../redux/slices/MaterialApiSlice"
 import { toast } from "react-toastify"
-import { useParams, useNavigate, Link } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 import Paginate from "../../components/Paginate"
 import { useState } from "react"
 import { FaArrowLeft } from "react-icons/fa"
 
 const MaterialList = () => {
-  const navigate = useNavigate()
   const [num, setNum] = useState(0)
   const { pageNumber } = useParams()
 
@@ -24,7 +23,7 @@ const MaterialList = () => {
     pageNumber,
   })
 
-  const [deleteProduct, { isLoading: loadingDelete, error: loadingError }] =
+  const [deleteProduct, { error: deleteerror }] =
     useDeleteMaterialByIdMutation()
   const [addMaterial] = useAddMaterialsMutation()
   const [substractMaterial] = useSubstractMaterialsMutation()
@@ -86,8 +85,10 @@ const MaterialList = () => {
       </Row>
       {isLoading ? (
         <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
+      ) : error || deleteerror ? (
+        <Message variant="danger">
+          {error.data.message || deleteerror.data.message}
+        </Message>
       ) : (
         <Table striped hover responsive className="table-sm">
           <thead>

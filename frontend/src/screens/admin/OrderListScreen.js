@@ -1,34 +1,34 @@
-import { FaTimes, FaArrowLeft } from "react-icons/fa";
-import { ImCheckmark } from "react-icons/im";
-import Loader from "../../components/Loader";
-import Message from "../../components/Message";
-import { useParams, Link } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
-import { Table, Button, ListGroup, Row, Col } from "react-bootstrap";
-import { toast } from "react-toastify";
+import { FaTimes, FaArrowLeft } from "react-icons/fa"
+import { ImCheckmark } from "react-icons/im"
+import Loader from "../../components/Loader"
+import Message from "../../components/Message"
+import { useParams, Link } from "react-router-dom"
+import { LinkContainer } from "react-router-bootstrap"
+import { Table, Button, ListGroup } from "react-bootstrap"
+import { toast } from "react-toastify"
 import {
   useGetAllOrdersQuery,
   usePayOrderMutation,
-} from "../../redux/slices/orderApiSlice";
-import Paginate from "../../components/Paginate";
+} from "../../redux/slices/orderApiSlice"
+import Paginate from "../../components/Paginate"
 
 const OrderListScreen = () => {
-  const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
-  const { pageNumber } = useParams();
+  const [payOrder, { error: payerror }] = usePayOrderMutation()
+  const { pageNumber } = useParams()
   const { data, isLoading, error, refetch } = useGetAllOrdersQuery({
     pageNumber,
-  });
-  console.log(data);
+  })
+  console.log(data)
 
   async function onApproveTest(id) {
     if (window.confirm("Are you sure?")) {
       const { data } = await payOrder({
         id,
         details: { id: "admin", status: "approved", payer: {} },
-      });
+      })
       if (data) {
-        toast.success("Order paid");
-        refetch();
+        toast.success("Order paid")
+        refetch()
       }
     }
   }
@@ -44,8 +44,10 @@ const OrderListScreen = () => {
       </h2>
       {isLoading ? (
         <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
+      ) : error || payerror ? (
+        <Message variant="danger">
+          {error.data.message || payerror.data.message}
+        </Message>
       ) : (
         <Table striped hover responsive className="table-sm">
           <thead>
@@ -116,7 +118,7 @@ const OrderListScreen = () => {
         link="/admin/orderlist"
       />
     </>
-  );
-};
+  )
+}
 
-export default OrderListScreen;
+export default OrderListScreen

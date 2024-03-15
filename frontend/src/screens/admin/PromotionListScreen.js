@@ -14,8 +14,7 @@ import { FaArrowLeft } from "react-icons/fa"
 const PromotionListScreen = () => {
   const { data, isLoading, error, refetch } = useGetAllPromotionsQuery()
 
-  const [deleteProduct, { isLoading: loadingDelete, error: loadingError }] =
-    useDeletePromotionMutation()
+  const [deleteProduct, { error: deleteerror }] = useDeletePromotionMutation()
 
   const deleteHandler = async (id) => {
     if (window.confirm("Are you sure?")) {
@@ -43,8 +42,10 @@ const PromotionListScreen = () => {
       </Row>
       {isLoading ? (
         <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
+      ) : error || deleteerror ? (
+        <Message variant="danger">
+          {error.data.message || deleteerror.data.message}
+        </Message>
       ) : (
         <Table striped hover responsive className="table-sm">
           <thead>

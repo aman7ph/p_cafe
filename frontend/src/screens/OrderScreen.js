@@ -23,7 +23,7 @@ const OrderScreen = () => {
     isLoading,
     error,
   } = useGetOrderDetailByIdQuery(id);
-  const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+  const [payOrder, { isLoading: loadingPay,error:payerror }] = usePayOrderMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -65,11 +65,11 @@ const OrderScreen = () => {
     );
     window.location.reload();
   };
-  console.log(order);
+
   return isLoading ? (
     <Loader />
-  ) : error ? (
-    <Message variant="danger">{error}</Message>
+  ) : error || payerror? (
+    <Message variant="danger">{error.data.message||payerror.data.message}</Message>
   ) : (
     <>
       <h2>

@@ -1,63 +1,62 @@
-import { FaEdit, FaTrash, FaArrowLeft } from "react-icons/fa";
-import { ImBlocked } from "react-icons/im";
-import Loader from "../../components/Loader";
-import Message from "../../components/Message";
-import { LinkContainer } from "react-router-bootstrap";
-import { Table, Button, Row, Col, Form } from "react-bootstrap";
+import { FaEdit, FaTrash, FaArrowLeft } from "react-icons/fa"
+import { ImBlocked } from "react-icons/im"
+import Loader from "../../components/Loader"
+import Message from "../../components/Message"
+import { LinkContainer } from "react-router-bootstrap"
+import { Table, Button, Row, Col, Form } from "react-bootstrap"
 import {
   useGetAllProductsForAdminQuery,
   useDeleteProductMutation,
   useGetUpdateStatusMutation,
-} from "../../redux/slices/productApiSlice";
-import { toast } from "react-toastify";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import Paginate from "../../components/Paginate";
-import { useState } from "react";
+} from "../../redux/slices/productApiSlice"
+import { toast } from "react-toastify"
+import { useParams, useNavigate, Link } from "react-router-dom"
+import Paginate from "../../components/Paginate"
+import { useState } from "react"
 
 const ProductList = () => {
-  const navigate = useNavigate();
-  const { pageNumber, category } = useParams();
-  const [urlcategory, setUrlCategory] = useState(category || "");
+  const navigate = useNavigate()
+  const { pageNumber, category } = useParams()
+  const [urlcategory, setUrlCategory] = useState(category || "")
 
   let { data, isLoading, error, refetch } = useGetAllProductsForAdminQuery({
     pageNumber,
     category,
-  });
+  })
 
-  const [updateProductStatus] = useGetUpdateStatusMutation();
+  const [updateProductStatus] = useGetUpdateStatusMutation()
 
-  const [deleteProduct, { isLoading: loadingDelete, error: loadingError }] =
-    useDeleteProductMutation();
+  const [deleteProduct, { error: payerror }] = useDeleteProductMutation()
 
   const deleteHandler = async (id) => {
     if (window.confirm("Are you sure?")) {
       try {
-        await deleteProduct(id);
-        refetch();
-        toast.success("Product deleted");
+        await deleteProduct(id)
+        refetch()
+        toast.success("Product deleted")
       } catch (error) {
-        toast.error(error?.data?.message || error.error);
+        toast.error(error?.data?.message || error.error)
       }
     }
-  };
+  }
   const updateStatusHandler = async (id) => {
     try {
-      await updateProductStatus(id);
-      refetch();
-      toast.success("Product status updated");
+      await updateProductStatus(id)
+      refetch()
+      toast.success("Product status updated")
     } catch (error) {
-      toast.error(error?.data?.message || error.error);
+      toast.error(error?.data?.message || error.error)
     }
-  };
+  }
 
   const categoryChangeHandler = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (urlcategory) {
-      navigate(`/admin/category/${urlcategory}`);
+      navigate(`/admin/category/${urlcategory}`)
     } else {
-      navigate("/admin/productlist");
+      navigate("/admin/productlist")
     }
-  };
+  }
 
   return (
     <>
@@ -91,8 +90,10 @@ const ProductList = () => {
       </Row>
       {isLoading ? (
         <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
+      ) : error || payerror ? (
+        <Message variant="danger">
+          {error.data.message || payerror.data.message}
+        </Message>
       ) : (
         <Table striped hover responsive className="table-sm">
           <thead>
@@ -147,7 +148,7 @@ const ProductList = () => {
       )}
       <Paginate page={data?.page} pages={data?.pages} isAdmin={true} />
     </>
-  );
-};
+  )
+}
 
-export default ProductList;
+export default ProductList
