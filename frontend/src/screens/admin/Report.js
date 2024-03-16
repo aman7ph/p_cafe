@@ -97,7 +97,7 @@ const Report = () => {
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant="danger">{error}</Message>
+        <Message variant="danger">{error.data.message}</Message>
       ) : (
         <Table striped hover responsive className="table-sm">
           <thead>
@@ -108,7 +108,7 @@ const Report = () => {
             </tr>
           </thead>
           <tbody>
-            {data.itemsSold.map((product, i) => (
+            {data?.itemsSold?.map((product, i) => (
               <tr key={i}>
                 <td>{product.itemName}</td>
                 <td>{product.totalSold}</td>
