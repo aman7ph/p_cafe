@@ -24,7 +24,6 @@ const CreateProductScreen = () => {
 
   const uploadFileHandler = async (e) => {
     const formData = new FormData()
-    console.log(e.target.files[0])
 
     formData.append("image", e.target.files[0])
     try {
