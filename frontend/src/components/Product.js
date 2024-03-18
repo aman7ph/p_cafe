@@ -46,7 +46,7 @@ const Product = ({ product }) => {
             </Form>
             <div>
               <Button
-                className="btn-block mx-1 "
+                className="btn-block mx-1 btn-primary animate__animated animate__button-click"
                 type="button"
                 disabled={product.countInStock === 0}
                 onClick={() => addToCartHandler(product._id)}

@@ -58,3 +58,8 @@ table th {
 .text-black{
   color: black;
 }
+
+@keyframes button-click {
+  from { transform: scale(1); }
+  to { transform: scale(0.9); }
+}

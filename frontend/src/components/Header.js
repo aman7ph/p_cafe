@@ -1,5 +1,5 @@
 import { Navbar, Container, Nav, Badge, NavDropdown } from "react-bootstrap"
-import { FaUser, FaShoppingCart } from "react-icons/fa"
+import { FaShoppingCart } from "react-icons/fa"
 import { LinkContainer } from "react-router-bootstrap"
 import { useSelector, useDispatch } from "react-redux"
 import { logout } from "../redux/slices/authSlice"
@@ -79,7 +79,7 @@ const Header = () => {
                   </Nav.Link>
                 </LinkContainer>
               )}
-              {user ? (
+              {user && (
                 <NavDropdown as="h6" title={user.name} id="username">
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
@@ -92,12 +92,6 @@ const Header = () => {
                     Logout
                   </NavDropdown.Item>
                 </NavDropdown>
-              ) : (
-                <LinkContainer to="/login">
-                  <Nav.Link>
-                    <FaUser /> sign In
-                  </Nav.Link>
-                </LinkContainer>
               )}
             </Nav>
           </Navbar.Collapse>
