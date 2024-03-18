@@ -91,7 +91,7 @@ const Report = () => {
         </Col>
       </Row>
       <h3 className="mt-2 ">
-        TOTAL_PRICE
+        TOTAL_PRICE-
         <span className="mx-2 text-success">{data?.totalSoldPrice}</span>
       </h3>
       {isLoading ? (

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef } from "react"
 import {
   Card,
   Container,
@@ -6,24 +6,24 @@ import {
   Col,
   ListGroup,
   ListGroupItem,
-} from "react-bootstrap";
-import dateFormater from "../utils/dateFormater";
-import ReactToPrint from "react-to-print";
+} from "react-bootstrap"
+import dateFormater from "../utils/dateFormater"
+import ReactToPrint from "react-to-print"
 
-const Recit = () => {
-  const ref = useRef();
+const Recit = ({ order }) => {
+  const ref = useRef()
 
   return (
     <>
-      <Card ref={ref} className="text-center">
-        <Card.Body mx-4>
+      <Card ref={ref} className="text-center ">
+        <Card.Body>
           <Container>
             <Row>
               <Col xs={12}>
                 <ListGroup>
                   <ListGroupItem className="text-black text-right">
-                    <h4>Thank for your order</h4>
-                    <h5>Profesor cafe</h5>
+                    <h5 style={{ margin: "0" }}>Thank for your order</h5>
+                    <h6 style={{ margin: "0" }}>Profesor cafe</h6>
                     <small>{dateFormater(Date.now())}</small>
                   </ListGroupItem>
                   <ListGroupItem className="text-black">
@@ -32,7 +32,7 @@ const Recit = () => {
                         <strong>Name</strong>
                       </Col>
                       <Col>
-                        <strong>amanuel</strong>
+                        <strong>{order.owner}</strong>
                       </Col>
                     </Row>
                     <Row>
@@ -40,7 +40,7 @@ const Recit = () => {
                         <strong>Order Number</strong>
                       </Col>
                       <Col>
-                        <strong>3939</strong>
+                        <strong>{order.orderNumber}</strong>
                       </Col>
                     </Row>
                     <Row>
@@ -48,7 +48,7 @@ const Recit = () => {
                         <strong>Arival Time</strong>
                       </Col>
                       <Col>
-                        <strong>8:80</strong>
+                        <strong>{order.ariveTime}</strong>
                       </Col>
                     </Row>
                     <Row>
@@ -56,7 +56,7 @@ const Recit = () => {
                         <h5>Total</h5>
                       </Col>
                       <Col>
-                        <h5>$393</h5>
+                        <h5>{order.totalPrice}Br</h5>
                       </Col>
                     </Row>
                   </ListGroupItem>
@@ -64,11 +64,11 @@ const Recit = () => {
               </Col>
             </Row>
             <hr />
-            <Row>
+            <Row style={{ padding: "0" }}>
               <Col xs={12}>
                 <ListGroup>
                   <ListGroupItem className="text-black text-right">
-                    <h5>Profesor cafe</h5>
+                    <h4 style={{ margin: "0" }}>Profesor cafe</h4>
                     <small>{dateFormater(Date.now())}</small>
                   </ListGroupItem>
                   <ListGroupItem className="text-black">
@@ -77,7 +77,7 @@ const Recit = () => {
                         <strong>Name</strong>
                       </Col>
                       <Col>
-                        <strong>amanuel</strong>
+                        <strong>{order.owner}</strong>
                       </Col>
                     </Row>
                     <Row>
@@ -85,7 +85,7 @@ const Recit = () => {
                         <strong>Order Number</strong>
                       </Col>
                       <Col>
-                        <strong>3939</strong>
+                        <strong>{order.orderNumber}</strong>
                       </Col>
                     </Row>
                     <Row>
@@ -93,7 +93,7 @@ const Recit = () => {
                         <strong>Arival Time</strong>
                       </Col>
                       <Col>
-                        <strong>8:80</strong>
+                        <strong>{order.ariveTime}</strong>
                       </Col>
                     </Row>
                   </ListGroupItem>
@@ -103,37 +103,22 @@ const Recit = () => {
 
             <hr />
 
-            <Row className="text-black">
-              <Col xs={10}>
-                <p>Pro Package</p>
-              </Col>
-              <Col xs={2}>
-                <p className="float-end">$199.00</p>
-              </Col>
-            </Row>
-            <hr />
-            <Row className="text-black">
-              <Col xs={10}>
-                <p>Consulting</p>
-              </Col>
-              <Col xs={2}>
-                <p className="float-end">$100.00</p>
-              </Col>
-            </Row>
-            <hr />
-            <Row className="text-black">
-              <Col xs={10}>
-                <p>Support</p>
-              </Col>
-              <Col xs={2}>
-                <p className="float-end">$10.00</p>
-              </Col>
-            </Row>
+            {order.orderItems.map((item, index) => (
+              <ListGroup.Item key={index}>
+                <div className="d-flex justify-content-around text-black  ">
+                  <p>{item.name}</p>
+                  <strong>{`(${item.qty})`}</strong>
+                </div>
+              </ListGroup.Item>
+            ))}
+
             <hr style={{ border: "2px solid black" }} />
 
             <Row className="text-black">
               <Col xs={12}>
-                <h3 className="float-end fw-bold">Total: $309.00</h3>
+                <h6 style={{ margin: "0" }} className="float-end fw-bold">
+                  Total: {order.totalPrice}Br
+                </h6>
               </Col>
             </Row>
             <hr style={{ border: "2px solid black" }} />
@@ -141,12 +126,15 @@ const Recit = () => {
         </Card.Body>
       </Card>
       <ReactToPrint
+        className="bg-white"
         bodyClass="print-agreement"
         content={() => ref.current}
-        trigger={() => <button type="primary">Print</button>}
+        trigger={() => (
+          <button className="btn btn-primary px-4 mt-2">Print</button>
+        )}
       />
     </>
-  );
-};
+  )
+}
 
-export default Recit;
+export default Recit

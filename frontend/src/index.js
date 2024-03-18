@@ -46,6 +46,7 @@ import OrderNumber from "./screens/OrderNumber"
 import PaiedOrderlist from "./screens/admin/PaiedOrderlist"
 import ForgotePassword from "./screens/Forgotepassword"
 import Reset from "./screens/Reset"
+import Nomach from "./components/Nomach"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -123,6 +124,7 @@ const router = createBrowserRouter(
         />
         <Route path="/admin/feedback/:id" element={<FeedbackDetail />} />
       </Route>
+      <Route path="*" element={<Nomach />} />
     </Route>
   )
 )

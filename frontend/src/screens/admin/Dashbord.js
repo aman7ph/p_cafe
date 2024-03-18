@@ -1,8 +1,15 @@
 import React from "react"
-
+import Loader from "../../components/Loader"
+import Message from "../../components/Message"
 import SplitButton from "../../components/SplitButton"
+import { useDailyQuery } from "./../../redux/slices/reportApiSlice"
+import Card from "react-bootstrap/Card"
+import { Row, Col } from "react-bootstrap"
 
 const Dashbord = () => {
+  const { data, error, isLoading } = useDailyQuery({ type: "" })
+  console.log(data)
+
   const productActions = [
     { link: "/admin/productlist", name: "Products list" },
     { link: "/admin/product/create", name: "Create Product" },
@@ -35,8 +42,42 @@ const Dashbord = () => {
           <SplitButton title="Reports" actions={reportActions} />
         </div>
       </div>
-      <div className="mx-5">
-        <h1>Dashbord</h1>
+      <div className="mx-5 w-100">
+        <h1>Dashboard</h1>
+        {isLoading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant="danger">{error.data.message}</Message>
+        ) : (
+          <Row>
+            <Col lg={6}>
+              <Card>
+                <Card.Body>
+                  <Card.Title>Total Price</Card.Title>
+                  <Card.Subtitle
+                    variant="outline-success"
+                    className="mb-2 text-muted "
+                  >
+                    {data?.totalSoldPrice || 0}Br
+                  </Card.Subtitle>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col lg={6}>
+              <Card className="w-100" variant="outline-success">
+                <Card.Body>
+                  <Card.Title>Total Order</Card.Title>
+                  <Card.Subtitle className="mb-2 text-muted ">
+                    {data?.totalSold?.reduce(
+                      (acc, item) => acc + item.totalSold,
+                      0
+                    ) || 0}
+                  </Card.Subtitle>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        )}
       </div>
     </div>
   )

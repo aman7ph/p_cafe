@@ -1,37 +1,18 @@
-import { FaTimes, FaArrowLeft } from "react-icons/fa";
-import { ImCheckmark } from "react-icons/im";
-import Loader from "../../components/Loader";
-import Message from "../../components/Message";
-import { useParams, Link } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
-import { Table, Button, ListGroup } from "react-bootstrap";
-import { toast } from "react-toastify";
-import {
-  useGetAllOrdersQuery,
-  usePayOrderMutation,
-} from "../../redux/slices/orderApiSlice";
-import Paginate from "../../components/Paginate";
+import { FaTimes, FaArrowLeft } from "react-icons/fa"
+import { ImCheckmark } from "react-icons/im"
+import Loader from "../../components/Loader"
+import Message from "../../components/Message"
+import { useParams, Link } from "react-router-dom"
+import { LinkContainer } from "react-router-bootstrap"
+import { Table, Button, ListGroup } from "react-bootstrap"
+import { useGetAllOrdersQuery } from "../../redux/slices/orderApiSlice"
+import Paginate from "../../components/Paginate"
 
 const OrderListScreen = () => {
-  const [payOrder, { error: payerror }] = usePayOrderMutation();
-  const { pageNumber } = useParams();
-  const { data, isLoading, error, refetch } = useGetAllOrdersQuery({
+  const { pageNumber } = useParams()
+  const { data, isLoading, error } = useGetAllOrdersQuery({
     pageNumber,
-  });
-  console.log(data);
-
-  async function onApproveTest(id) {
-    if (window.confirm("Are you sure?")) {
-      const { data } = await payOrder({
-        id,
-        details: { id: "admin", status: "approved", payer: {} },
-      });
-      if (data) {
-        toast.success("Order paid");
-        refetch();
-      }
-    }
-  }
+  })
 
   return (
     <>
@@ -44,10 +25,8 @@ const OrderListScreen = () => {
       </h2>
       {isLoading ? (
         <Loader />
-      ) : error || payerror ? (
-        <Message variant="danger">
-          {error.data.message || payerror.data.message}
-        </Message>
+      ) : error ? (
+        <Message variant="danger">{error.data.message}</Message>
       ) : (
         <Table striped hover responsive className="table-sm">
           <thead>
@@ -62,8 +41,13 @@ const OrderListScreen = () => {
           </thead>
           <tbody>
             {data?.orders?.map((order) => (
-              <tr key={order._id}>
-                <td>{order.orderNumber || "1234"}</td>
+              <tr
+                key={order._id}
+                onClick={() => {
+                  window.location.href = `/order/${order._id}`
+                }}
+              >
+                <td>{order.orderNumber || "----"}</td>
                 <td>{order.owner}</td>
                 <td>
                   {" "}
@@ -93,19 +77,6 @@ const OrderListScreen = () => {
                     </Button>
                   </LinkContainer>
                 </td>
-                <td>
-                  <div>
-                    {!order.isPaid && (
-                      <Button
-                        variant="success"
-                        style={{ marginBottom: "10px" }}
-                        onClick={() => onApproveTest(order._id)}
-                      >
-                        Approve
-                      </Button>
-                    )}{" "}
-                  </div>
-                </td>
               </tr>
             ))}
           </tbody>
@@ -119,7 +90,7 @@ const OrderListScreen = () => {
         link="/admin/orderlist"
       />
     </>
-  );
-};
+  )
+}
 
-export default OrderListScreen;
+export default OrderListScreen
