@@ -9,6 +9,7 @@ import {
 } from "./../redux/slices/orderApiSlice";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import Recit from "../components/Recit";
 
 import { toast } from "react-toastify";
 import { FaArrowLeft } from "react-icons/fa";
@@ -23,7 +24,8 @@ const OrderScreen = () => {
     isLoading,
     error,
   } = useGetOrderDetailByIdQuery(id);
-  const [payOrder, { isLoading: loadingPay,error:payerror }] = usePayOrderMutation();
+  const [payOrder, { isLoading: loadingPay, error: payerror }] =
+    usePayOrderMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -68,8 +70,10 @@ const OrderScreen = () => {
 
   return isLoading ? (
     <Loader />
-  ) : error || payerror? (
-    <Message variant="danger">{error.data.message||payerror.data.message}</Message>
+  ) : error || payerror ? (
+    <Message variant="danger">
+      {error.data.message || payerror.data.message}
+    </Message>
   ) : (
     <>
       <h2>
@@ -87,7 +91,7 @@ const OrderScreen = () => {
         </strong>
       </h2>
       <Row>
-        <Col md={8}>
+        <Col md={4}>
           <ListGroup variant="flush">
             {userInfo && (
               <ListGroup.Item>
@@ -204,6 +208,9 @@ const OrderScreen = () => {
               )}
             </ListGroup>
           </Card>
+        </Col>
+        <Col md={4}>
+          <Recit />
         </Col>
       </Row>
     </>

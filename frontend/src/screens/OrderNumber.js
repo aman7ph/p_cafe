@@ -1,46 +1,47 @@
-import { Link, useParams } from "react-router-dom"
-import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap"
-import { useDispatch, useSelector } from "react-redux"
-import { setCart } from "../redux/slices/cartSlice"
-import dateFormater from "../utils/dateFormater"
+import { Link, useParams } from "react-router-dom";
+import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { setCart } from "../redux/slices/cartSlice";
+import dateFormater from "../utils/dateFormater";
 import {
   useGetOrderBYorderNumberQuery,
   usePayOrderMutation,
-} from "./../redux/slices/orderApiSlice"
-import Loader from "../components/Loader"
-import Message from "../components/Message"
+} from "./../redux/slices/orderApiSlice";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 
-import { toast } from "react-toastify"
-import { FaArrowLeft } from "react-icons/fa"
-import { useEffect } from "react"
+import { toast } from "react-toastify";
+import { FaArrowLeft } from "react-icons/fa";
+import { useEffect } from "react";
 
 const OrderNumber = () => {
-  console.log(useParams())
-  const { orderNumber } = useParams()
+  console.log(useParams());
+  const { orderNumber } = useParams();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const {
     data: order,
     refetch,
     isLoading,
     error,
-  } = useGetOrderBYorderNumberQuery(orderNumber)
-  const [payOrder, { isLoading: loadingPay,error:payerror }] = usePayOrderMutation()
-  console.log(useGetOrderBYorderNumberQuery(orderNumber))
+  } = useGetOrderBYorderNumberQuery(orderNumber);
+  const [payOrder, { isLoading: loadingPay, error: payerror }] =
+    usePayOrderMutation();
+  console.log(useGetOrderBYorderNumberQuery(orderNumber));
 
-  console.log(order)
+  console.log(order);
 
-  const { userInfo } = useSelector((state) => state.auth)
+  const { userInfo } = useSelector((state) => state.auth);
   async function onApproveTest(id) {
     if (window.confirm("Are you sure?")) {
       const { data } = await payOrder({
         id,
         details: { id: "admin", status: "approved", payer: {} },
-      })
+      });
       if (data) {
-        toast.success("Order paid")
-        refetch()
+        toast.success("Order paid");
+        refetch();
       }
     }
   }
@@ -55,7 +56,7 @@ const OrderNumber = () => {
         ariveTime: order.ariveTime,
         totalPrice: order.totalPrice,
       })
-    )
+    );
     dispatch(
       setCart({
         id: order._id,
@@ -65,17 +66,19 @@ const OrderNumber = () => {
         ariveTime: order.ariveTime,
         totalPrice: order.totalPrice,
       })
-    )
-    window.location.reload()
-  }
+    );
+    window.location.reload();
+  };
   useEffect(() => {
-    refetch()
-  }, [refetch])
+    refetch();
+  }, [refetch]);
 
   return isLoading ? (
     <Loader />
-  ) : error||payerror ? (
-    <Message variant="danger">{error.data.message||payerror.data.message}</Message>
+  ) : error || payerror ? (
+    <Message variant="danger">
+      {error.data.message || payerror.data.message}
+    </Message>
   ) : (
     <>
       <h2>
@@ -189,17 +192,18 @@ const OrderNumber = () => {
                 )}
                 {userInfo && !order.isPaid && (
                   <div>
-                  {loadingPay ? (
-                    <Loader />
-                  ) : (
-                    <Button
-                      
-                      style={{ marginBottom: "10px" }}
-                      onClick={() => onApproveTest(order._id)}
-                    >
-                      Aprove
-                    </Button>
-                  )}
+                    {loadingPay ? (
+                      <Loader />
+                    ) : (
+                      <>
+                        <Button
+                          style={{ marginBottom: "10px" }}
+                          onClick={() => onApproveTest(order._id)}
+                        >
+                          Aprove
+                        </Button>
+                      </>
+                    )}
                   </div>
                 )}
               </ListGroup.Item>
@@ -208,7 +212,7 @@ const OrderNumber = () => {
         </Col>
       </Row>
     </>
-  )
-}
+  );
+};
 
-export default OrderNumber
+export default OrderNumber;

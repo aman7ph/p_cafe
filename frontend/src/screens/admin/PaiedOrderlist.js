@@ -1,25 +1,25 @@
-import { FaTimes, FaArrowLeft } from "react-icons/fa"
-import { ImCheckmark } from "react-icons/im"
-import Loader from "../../components/Loader"
-import Message from "../../components/Message"
-import { useParams, Link } from "react-router-dom"
-import { LinkContainer } from "react-router-bootstrap"
-import { Table, Button, ListGroup } from "react-bootstrap"
+import { FaTimes, FaArrowLeft } from "react-icons/fa";
+import { ImCheckmark } from "react-icons/im";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
+import { useParams, Link } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
+import { Table, Button, ListGroup } from "react-bootstrap";
 
-import { usePaiedOrderQuery } from "../../redux/slices/orderApiSlice"
-import Paginate from "../../components/Paginate"
+import { usePaiedOrderQuery } from "../../redux/slices/orderApiSlice";
+import Paginate from "../../components/Paginate";
 
 const PaiedOrderlist = () => {
-  const { pageNumber } = useParams()
+  const { pageNumber } = useParams();
   const { data, isLoading, error } = usePaiedOrderQuery({
     pageNumber,
-  })
+  });
 
   console.log(
     usePaiedOrderQuery({
       pageNumber,
     })
-  )
+  );
 
   return (
     <>
@@ -89,7 +89,7 @@ const PaiedOrderlist = () => {
         link="/admin/paiedorderlist"
       />
     </>
-  )
-}
+  );
+};
 
-export default PaiedOrderlist
+export default PaiedOrderlist;
