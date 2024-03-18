@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import {
   Card,
   Container,
@@ -6,12 +6,14 @@ import {
   Col,
   ListGroup,
   ListGroupItem,
+  Form,
 } from "react-bootstrap"
 import dateFormater from "../utils/dateFormater"
 import ReactToPrint from "react-to-print"
 
 const Recit = ({ order }) => {
   const ref = useRef()
+  const [table, setTable] = useState("-")
 
   return (
     <>
@@ -49,6 +51,15 @@ const Recit = ({ order }) => {
                       </Col>
                       <Col>
                         <strong>{order.ariveTime}</strong>
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col>
+                        <strong>Table</strong>
+                      </Col>
+                      <Col>
+                        <strong>{table}</strong>
                       </Col>
                     </Row>
                     <Row>
@@ -96,6 +107,14 @@ const Recit = ({ order }) => {
                         <strong>{order.ariveTime}</strong>
                       </Col>
                     </Row>
+                    <Row>
+                      <Col>
+                        <strong>Table</strong>
+                      </Col>
+                      <Col>
+                        <strong>{table}</strong>
+                      </Col>
+                    </Row>
                   </ListGroupItem>
                 </ListGroup>
               </Col>
@@ -125,14 +144,30 @@ const Recit = ({ order }) => {
           </Container>
         </Card.Body>
       </Card>
-      <ReactToPrint
-        className="bg-white"
-        bodyClass="print-agreement"
-        content={() => ref.current}
-        trigger={() => (
-          <button className="btn btn-primary px-4 mt-2">Print</button>
-        )}
-      />
+      <div className="d-flex">
+        <ReactToPrint
+          className="bg-white"
+          bodyClass="print-agreement"
+          content={() => ref.current}
+          trigger={() => (
+            <button className="btn btn-primary px-4 mt-2">Print</button>
+          )}
+        />
+        <Form.Control
+          as="select"
+          className=" mt-2 mx-3"
+          value={table}
+          onChange={(e) => setTable(e.target.value)}
+        >
+          <option value="">Select Table</option>
+          <option value="A1">A1</option>
+          <option value="A2">A2</option>
+          <option value="A3">A3</option>
+          <option value="A4">A4</option>
+          <option value="B">B</option>
+          <option value="other">Other</option>
+        </Form.Control>
+      </div>
     </>
   )
 }

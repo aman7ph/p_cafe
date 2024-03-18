@@ -23,7 +23,7 @@ const Home = () => {
         <>
           <Row className=" my-5 px-3 bg-light-gray">
             <Col sm={12} md={6} className="mb-5">
-              <div className="centerd my-5">
+              <div className="centerd" style={{ marginTop: "150px" }}>
                 <h1 className="text-success">Welcome to Professor caffe</h1>
                 <p>
                   It all began in 2002 with the purchase of our Genesee Street

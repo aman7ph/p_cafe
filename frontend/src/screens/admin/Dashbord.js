@@ -68,10 +68,7 @@ const Dashbord = () => {
                 <Card.Body>
                   <Card.Title>Total Order</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted ">
-                    {data?.totalSold?.reduce(
-                      (acc, item) => acc + item.totalSold,
-                      0
-                    ) || 0}
+                    {data?.itemsSold?.length || 0}
                   </Card.Subtitle>
                 </Card.Body>
               </Card>
