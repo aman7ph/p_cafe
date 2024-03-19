@@ -102,7 +102,7 @@ const Recit = ({ order }) => {
 
         {order.orderItems.map((item, index) => (
           <ListGroup.Item key={index} style={{ padding: "0" }}>
-            <div className="d-flex justify-content-around text-black border ">
+            <div className="d-flex justify-content-around text-black  ">
               <small className=" spacer xs-text">{item.name}</small>
               <small className=" spacer xs-text">{`(${item.qty})`}</small>
             </div>
