@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react"
 import {
-  Card,
   Container,
   Row,
   Col,
@@ -17,138 +16,137 @@ const Recit = ({ order }) => {
 
   return (
     <>
-      <Card ref={ref} className="text-center">
-        <Card.Body className="">
-          <Container>
-            <Row>
-              <Col xs={12}>
-                <ListGroup>
-                  <ListGroupItem
-                    className="text-black text-right border"
-                    style={{ padding: "0" }}
-                  >
-                    <strong style={{ margin: "0" }} className="">
-                      Thank for your order
-                    </strong>
-                    <p style={{ margin: "0" }}>Profesor cafe</p>
-                    <small>{dateFormater(Date.now())}</small>
-                  </ListGroupItem>
-                  <ListGroupItem
-                    className="text-black border"
-                    style={{ padding: "0" }}
-                  >
-                    <Row>
-                      <Col>
-                        <p className="spacer">Name</p>
-                      </Col>
-                      <Col>
-                        <p className="spacer">{order.owner}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <p className="spacer">Order Number</p>
-                      </Col>
-                      <Col>
-                        <p className="spacer">{order.orderNumber}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <p className="spacer">Arival Time</p>
-                      </Col>
-                      <Col>
-                        <p className="spacer">{order.ariveTime}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <p className="spacer">Table</p>
-                      </Col>
-                      <Col>
-                        <p className="spacer">{table}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <p className="spacer">Total</p>
-                      </Col>
-                      <Col>
-                        <p className="spacer">{order.totalPrice}Br</p>
-                      </Col>
-                    </Row>
-                  </ListGroupItem>
-                </ListGroup>
-              </Col>
-            </Row>
-
-            <Row style={{ padding: "0" }}>
-              <Col xs={12}>
-                <ListGroup className=" mt-2">
-                  <ListGroupItem className="text-black text-right p-0 ">
-                    <strong className="mx-3">Profesor cafe</strong>
-                    <small>{dateFormater(Date.now())}</small>
-                  </ListGroupItem>
-                  <ListGroupItem
-                    className="text-black"
-                    style={{ padding: "0" }}
-                  >
-                    <Row>
-                      <Col>
-                        <p className="spacer">Name</p>
-                      </Col>
-                      <Col>
-                        <p className="spacer">{order.owner}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <p className="spacer">Order Number</p>
-                      </Col>
-                      <Col>
-                        <p className="spacer">{order.orderNumber}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <p className="spacer">Arival Time</p>
-                      </Col>
-                      <Col>
-                        <p className="spacer">{order.ariveTime}</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <p className="spacer">Table</p>
-                      </Col>
-                      <Col>
-                        <p className="spacer">{table}</p>
-                      </Col>
-                    </Row>
-                  </ListGroupItem>
-                </ListGroup>
-              </Col>
-            </Row>
-
-            {order.orderItems.map((item, index) => (
-              <ListGroup.Item key={index} style={{ padding: "0" }}>
-                <div className="d-flex justify-content-around text-black border-bottom  ">
-                  <p className="spacer">{item.name}</p>
-                  <p className="spacer">{`(${item.qty})`}</p>
-                </div>
-              </ListGroup.Item>
-            ))}
-
-            <Row className="text-black ">
-              <Col xs={12}>
-                <strong style={{ margin: "0" }} className="float-end fw-bold ">
-                  Total: {order.totalPrice}Br
+      <Container ref={ref} className="text-center w-75">
+        <Row className="w-75">
+          <Col xs={12}>
+            <ListGroup>
+              <ListGroupItem
+                className="text-black text-right border"
+                style={{ padding: "0" }}
+              >
+                <strong style={{ margin: "0" }} className=" xs-text">
+                  Thank for your order
                 </strong>
-              </Col>
-            </Row>
-          </Container>
-        </Card.Body>
-      </Card>
+                <small style={{ margin: "0" }} className="d-block xs-text">
+                  Profesor cafe
+                </small>
+                <small className="xs-text">{dateFormater(Date.now())}</small>
+              </ListGroupItem>
+              <ListGroupItem
+                className="text-black border"
+                style={{ padding: "0" }}
+              >
+                <Row>
+                  <Col>
+                    <small className=" spacer xs-text">Name</small>
+                  </Col>
+                  <Col>
+                    <small className=" spacer xs-text">{order.owner}</small>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <small className=" spacer xs-text">Order Number</small>
+                  </Col>
+                  <Col>
+                    <small className=" spacer xs-text">
+                      {order.orderNumber}
+                    </small>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <small className=" spacer xs-text">Arival Time</small>
+                  </Col>
+                  <Col>
+                    <small className=" spacer xs-text">{order.ariveTime}</small>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <small className=" spacer xs-text">Table</small>
+                  </Col>
+                  <Col>
+                    <small className=" spacer xs-text">{table}</small>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <small className=" spacer xs-text">Total</small>
+                  </Col>
+                  <Col>
+                    <small className=" spacer xs-text">
+                      {order.totalPrice}Br
+                    </small>
+                  </Col>
+                </Row>
+              </ListGroupItem>
+            </ListGroup>
+          </Col>
+        </Row>
+
+        <Row style={{ padding: "0" }} className="w-75">
+          <Col xs={12}>
+            <ListGroup className=" mt-2">
+              <ListGroupItem className="text-black" style={{ padding: "0" }}>
+                <Row>
+                  <Col>
+                    <small className=" spacer xs-text">Name</small>
+                  </Col>
+                  <Col>
+                    <small className=" spacer xs-text">{order.owner}</small>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <small className=" spacer xs-text">Order Number</small>
+                  </Col>
+                  <Col>
+                    <small className=" spacer xs-text">
+                      {order.orderNumber}
+                    </small>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <small className=" spacer xs-text">Arival Time</small>
+                  </Col>
+                  <Col>
+                    <small className=" spacer xs-text">{order.ariveTime}</small>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <small className=" spacer xs-text">Table</small>
+                  </Col>
+                  <Col>
+                    <small className=" spacer xs-text">{table}</small>
+                  </Col>
+                </Row>
+              </ListGroupItem>
+            </ListGroup>
+          </Col>
+        </Row>
+
+        {order.orderItems.map((item, index) => (
+          <ListGroup.Item key={index} style={{ padding: "0" }} className="w-75">
+            <div className="d-flex justify-content-around text-black border-bottom  ">
+              <small className=" spacer xs-text">{item.name}</small>
+              <small className=" spacer xs-text">{`(${item.qty})`}</small>
+            </div>
+          </ListGroup.Item>
+        ))}
+
+        <Row className="text-black w-75">
+          <Col xs={12} className="d-flex justify-content-between">
+            <small className="spacer xs-text ">
+              {dateFormater(Date.now())}
+            </small>
+            <small className=" xs-text ">Total: {order.totalPrice}Br</small>
+          </Col>
+        </Row>
+      </Container>
+
       <div className="d-flex">
         <ReactToPrint
           className="bg-white"
