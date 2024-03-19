@@ -64,6 +64,8 @@ table th {
 }
 .xs-text{
   font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 @keyframes button-click {
   from { transform: scale(1); }

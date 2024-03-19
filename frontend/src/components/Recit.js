@@ -32,7 +32,7 @@ const Recit = ({ order }) => {
                   </small>
                 </div>
                 <div className="d-flex justify-content-around text-black  ">
-                  <small className=" spacer xs-text">Name</small>
+                  <small className="spacer xs-text">Name</small>
                   <small className=" spacer xs-text"> {order.owner}</small>
                 </div>
 
@@ -67,6 +67,13 @@ const Recit = ({ order }) => {
           <Col xs={12}>
             <ListGroup className=" mt-2">
               <ListGroupItem className="text-black" style={{ padding: "0" }}>
+                <div className="d-flex justify-content-around text-black  border-bottom   ">
+                  <small className=" spacer xs-text">Profesor cafe</small>
+                  <small className=" spacer xs-text">
+                    {" "}
+                    {dateFormater(Date.now())}
+                  </small>
+                </div>
                 <div className="d-flex justify-content-around text-black  ">
                   <small className=" spacer xs-text">Name</small>
                   <small className=" spacer xs-text"> {order.owner}</small>
@@ -95,7 +102,7 @@ const Recit = ({ order }) => {
 
         {order.orderItems.map((item, index) => (
           <ListGroup.Item key={index} style={{ padding: "0" }}>
-            <div className="d-flex justify-content-around text-black border-bottom  ">
+            <div className="d-flex justify-content-around text-black border ">
               <small className=" spacer xs-text">{item.name}</small>
               <small className=" spacer xs-text">{`(${item.qty})`}</small>
             </div>
