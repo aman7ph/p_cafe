@@ -17,7 +17,7 @@ const Recit = ({ order }) => {
   return (
     <>
       <Container ref={ref} className="text-center ">
-        <Row className="">
+        <Row className="mb-2">
           <Col xs={12}>
             <ListGroup>
               <ListGroupItem
@@ -62,8 +62,10 @@ const Recit = ({ order }) => {
             </ListGroup>
           </Col>
         </Row>
-
-        <Row style={{ padding: "0" }}>
+        <Row>
+          <Col xs={12} className="border-bottom  my-3"></Col>
+        </Row>
+        <Row style={{ padding: "0" }} className="">
           <Col xs={12}>
             <ListGroup className=" mt-2">
               <ListGroupItem className="text-black" style={{ padding: "0" }}>
@@ -102,7 +104,7 @@ const Recit = ({ order }) => {
 
         {order.orderItems.map((item, index) => (
           <ListGroup.Item key={index} style={{ padding: "0" }}>
-            <div className="d-flex justify-content-around text-black  ">
+            <div className="d-flex justify-content-around text-black border-bottom ">
               <small className=" spacer xs-text">{item.name}</small>
               <small className=" spacer xs-text">{`(${item.qty})`}</small>
             </div>
