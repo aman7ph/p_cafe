@@ -37,7 +37,7 @@ const Recit = ({ order }) => {
                 </div>
 
                 <div className="d-flex justify-content-around text-black   ">
-                  <small className=" spacer xs-text">Order Number</small>
+                  <small className=" spacer xs-text">O_Number</small>
                   <small className=" spacer xs-text">
                     {" "}
                     {order.orderNumber}
@@ -45,7 +45,7 @@ const Recit = ({ order }) => {
                 </div>
 
                 <div className="d-flex justify-content-around text-black ">
-                  <small className=" spacer xs-text">Arival Time</small>
+                  <small className=" spacer xs-text">Time</small>
                   <small className=" spacer xs-text">{order.ariveTime}</small>
                 </div>
                 <div className="d-flex justify-content-around text-black  ">
@@ -73,7 +73,7 @@ const Recit = ({ order }) => {
                 </div>
 
                 <div className="d-flex justify-content-around text-black   ">
-                  <small className=" spacer xs-text">Order Number</small>
+                  <small className=" spacer xs-text">O_Number</small>
                   <small className=" spacer xs-text">
                     {" "}
                     {order.orderNumber}
@@ -81,7 +81,7 @@ const Recit = ({ order }) => {
                 </div>
 
                 <div className="d-flex justify-content-around text-black ">
-                  <small className=" spacer xs-text">Arival Time</small>
+                  <small className=" spacer xs-text">Time</small>
                   <small className=" spacer xs-text">{order.ariveTime}</small>
                 </div>
                 <div className="d-flex justify-content-around text-black  ">
