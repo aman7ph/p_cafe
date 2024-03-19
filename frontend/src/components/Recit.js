@@ -16,120 +16,85 @@ const Recit = ({ order }) => {
 
   return (
     <>
-      <Container ref={ref} className="text-center w-75">
-        <Row className="w-75">
+      <Container ref={ref} className="text-center ">
+        <Row className="">
           <Col xs={12}>
             <ListGroup>
-              <ListGroupItem
-                className="text-black text-right border"
-                style={{ padding: "0" }}
-              >
-                <strong style={{ margin: "0" }} className=" xs-text">
-                  Thank for your order
-                </strong>
-                <small style={{ margin: "0" }} className="d-block xs-text">
-                  Profesor cafe
-                </small>
-                <small className="xs-text">{dateFormater(Date.now())}</small>
-              </ListGroupItem>
               <ListGroupItem
                 className="text-black border"
                 style={{ padding: "0" }}
               >
-                <Row>
-                  <Col>
-                    <small className=" spacer xs-text">Name</small>
-                  </Col>
-                  <Col>
-                    <small className=" spacer xs-text">{order.owner}</small>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <small className=" spacer xs-text">Order Number</small>
-                  </Col>
-                  <Col>
-                    <small className=" spacer xs-text">
-                      {order.orderNumber}
-                    </small>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <small className=" spacer xs-text">Arival Time</small>
-                  </Col>
-                  <Col>
-                    <small className=" spacer xs-text">{order.ariveTime}</small>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <small className=" spacer xs-text">Table</small>
-                  </Col>
-                  <Col>
-                    <small className=" spacer xs-text">{table}</small>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <small className=" spacer xs-text">Total</small>
-                  </Col>
-                  <Col>
-                    <small className=" spacer xs-text">
-                      {order.totalPrice}Br
-                    </small>
-                  </Col>
-                </Row>
+                <div className="d-flex justify-content-around text-black  border-bottom   ">
+                  <small className=" spacer xs-text">Profesor cafe</small>
+                  <small className=" spacer xs-text">
+                    {" "}
+                    {dateFormater(Date.now())}
+                  </small>
+                </div>
+                <div className="d-flex justify-content-around text-black  ">
+                  <small className=" spacer xs-text">Name</small>
+                  <small className=" spacer xs-text"> {order.owner}</small>
+                </div>
+
+                <div className="d-flex justify-content-around text-black   ">
+                  <small className=" spacer xs-text">Order Number</small>
+                  <small className=" spacer xs-text">
+                    {" "}
+                    {order.orderNumber}
+                  </small>
+                </div>
+
+                <div className="d-flex justify-content-around text-black ">
+                  <small className=" spacer xs-text">Arival Time</small>
+                  <small className=" spacer xs-text">{order.ariveTime}</small>
+                </div>
+                <div className="d-flex justify-content-around text-black  ">
+                  <small className=" spacer xs-text">Table</small>
+                  <small className=" spacer xs-text">{table}</small>
+                </div>
+                <div className="d-flex justify-content-around text-black  ">
+                  <small className=" spacer xs-text">Total</small>
+                  <small className=" spacer xs-text">
+                    {order.totalPrice}Br
+                  </small>
+                </div>
               </ListGroupItem>
             </ListGroup>
           </Col>
         </Row>
 
-        <Row style={{ padding: "0" }} className="w-75">
+        <Row style={{ padding: "0" }}>
           <Col xs={12}>
             <ListGroup className=" mt-2">
               <ListGroupItem className="text-black" style={{ padding: "0" }}>
-                <Row>
-                  <Col>
-                    <small className=" spacer xs-text">Name</small>
-                  </Col>
-                  <Col>
-                    <small className=" spacer xs-text">{order.owner}</small>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <small className=" spacer xs-text">Order Number</small>
-                  </Col>
-                  <Col>
-                    <small className=" spacer xs-text">
-                      {order.orderNumber}
-                    </small>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <small className=" spacer xs-text">Arival Time</small>
-                  </Col>
-                  <Col>
-                    <small className=" spacer xs-text">{order.ariveTime}</small>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <small className=" spacer xs-text">Table</small>
-                  </Col>
-                  <Col>
-                    <small className=" spacer xs-text">{table}</small>
-                  </Col>
-                </Row>
+                <div className="d-flex justify-content-around text-black  ">
+                  <small className=" spacer xs-text">Name</small>
+                  <small className=" spacer xs-text"> {order.owner}</small>
+                </div>
+
+                <div className="d-flex justify-content-around text-black   ">
+                  <small className=" spacer xs-text">Order Number</small>
+                  <small className=" spacer xs-text">
+                    {" "}
+                    {order.orderNumber}
+                  </small>
+                </div>
+
+                <div className="d-flex justify-content-around text-black ">
+                  <small className=" spacer xs-text">Arival Time</small>
+                  <small className=" spacer xs-text">{order.ariveTime}</small>
+                </div>
+                <div className="d-flex justify-content-around text-black  ">
+                  <small className=" spacer xs-text">Table</small>
+                  <small className=" spacer xs-text">{table}</small>
+                </div>
               </ListGroupItem>
             </ListGroup>
           </Col>
         </Row>
 
         {order.orderItems.map((item, index) => (
-          <ListGroup.Item key={index} style={{ padding: "0" }} className="w-75">
+          <ListGroup.Item key={index} style={{ padding: "0" }}>
             <div className="d-flex justify-content-around text-black border-bottom  ">
               <small className=" spacer xs-text">{item.name}</small>
               <small className=" spacer xs-text">{`(${item.qty})`}</small>
@@ -137,7 +102,7 @@ const Recit = ({ order }) => {
           </ListGroup.Item>
         ))}
 
-        <Row className="text-black w-75">
+        <Row className="text-black ">
           <Col xs={12} className="d-flex justify-content-between">
             <small className="spacer xs-text ">
               {dateFormater(Date.now())}
