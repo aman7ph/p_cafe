@@ -16,9 +16,6 @@ const Reset = () => {
 
   const [resetPassword, { isLoading }] = useResetPasswordMutation()
 
-  const { userInfo } = useSelector((state) => state.auth)
-  console.log(userInfo)
-
   const submitHandler = async (e) => {
     e.preventDefault()
     if (password !== confirmPassword) {

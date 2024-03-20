@@ -21,7 +21,7 @@ const resize = (req, res, next) => {
     .resize({
       width: 400,
       height: 400,
-      fit: "cover",
+      fit: "fill",
     })
     .toFormat("jpeg")
     .jpeg({ quality: 90 })

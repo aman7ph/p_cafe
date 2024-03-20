@@ -20,7 +20,6 @@ import Home from "./screens/Home"
 import ProductDetail from "./screens/ProductDetail"
 import CartScreen from "./screens/CartScreen"
 import LoginScreen from "./screens/LoginScreen"
-//import RegisterScreen from "./screens/RegisterScreen"
 
 import PrivateRouter from "./components/PrivateRouter"
 
@@ -67,7 +66,6 @@ const router = createBrowserRouter(
       <Route path="/product/:id" element={<ProductDetail />} />
       <Route path="/cart" element={<CartScreen />} />
       <Route path="/login" element={<LoginScreen />} />
-      {/* <Route path="/register" element={<RegisterScreen />} /> */}
       <Route path="/forgotpassword" element={<ForgotePassword />} />
       <Route path="/reset/:token" element={<Reset />} />
       <Route path="/order/:id" element={<OrderScreen />} />

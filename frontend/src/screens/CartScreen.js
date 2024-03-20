@@ -54,6 +54,9 @@ const CartScreen = () => {
       toast.error(error?.data?.message || error.error)
     }
   }
+  const handleClear = () => {
+    dispatch(clearCart())
+  }
   const updateOederHandler = async () => {
     try {
       await updateOrder({
@@ -226,6 +229,14 @@ const CartScreen = () => {
                     onClick={PlaceOrderHandler}
                   >
                     Place Order
+                  </Button>
+                  <Button
+                    type="button"
+                    className="btn-block mx-2"
+                    disabled={cart.cartItems === 0}
+                    onClick={handleClear}
+                  >
+                    clear cart
                   </Button>
                   {isLoading && <Loader />}
                 </div>
