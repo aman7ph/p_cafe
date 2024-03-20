@@ -65,7 +65,7 @@ const CreateWorkerScreen = () => {
               type="number"
               placeholder="Enter initial number"
               value={phoneNumber}
-              onChange={(e) => setPhoneNumber(Number(e.target.value))}
+              onChange={(e) => setPhoneNumber(e.target.value)}
             />
           </Form.Group>
 
