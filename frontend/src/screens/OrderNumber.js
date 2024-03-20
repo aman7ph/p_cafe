@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { Row, Col, ListGroup, Card, Button } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { setCart } from "../redux/slices/cartSlice"
@@ -16,7 +16,7 @@ import { useEffect } from "react"
 import Recit from "../components/Recit"
 
 const OrderNumber = () => {
-  console.log(useParams())
+  const navigate = useNavigate()
   const { orderNumber } = useParams()
 
   const dispatch = useDispatch()
@@ -70,6 +70,13 @@ const OrderNumber = () => {
     )
     window.location.reload()
   }
+  const handleBack = () => {
+    if (userInfo) {
+      navigate(-1)
+    } else {
+      navigate("/")
+    }
+  }
   useEffect(() => {
     refetch()
   }, [refetch])
@@ -84,12 +91,9 @@ const OrderNumber = () => {
     <>
       <h2>
         {" "}
-        <Link
-          to={userInfo ? `/admin/orderlist` : "/"}
-          className="btn btn-light mx-4"
-        >
+        <Button onClick={handleBack} className="btn btn-light mx-4">
           <FaArrowLeft /> go back
-        </Link>
+        </Button>
         {`Your Order Number ->`}
         <strong className="text-danger">
           {" "}

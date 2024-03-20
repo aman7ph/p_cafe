@@ -30,16 +30,22 @@ const Dashbord = () => {
     { link: "/admin/feedbacklist", name: "Feedback list" },
   ]
   const reportActions = [{ link: "/admin/reports", name: "Reports" }]
+  const workerActions = [
+    { link: "/admin/worker/create", name: "Create Worker" },
+    { link: "/admin/workerlist", name: "Workers list" },
+  ]
   return (
     <div className="d-flex">
       <div className="w-25">
         <div className="d-flex flex-column ">
           <SplitButton title="Product" actions={productActions} />
           <SplitButton title="Order" actions={orderActions} />
-          <SplitButton title="Materials" actions={materialActions} />
+
+          <SplitButton title="Workers" actions={workerActions} />
           <SplitButton title="Promotion" actions={promotionActions} />
           <SplitButton title="Feedback" actions={feedbackActions} />
           <SplitButton title="Reports" actions={reportActions} />
+          <SplitButton title="Materials" actions={materialActions} />
         </div>
       </div>
       <div className="mx-5 w-100">

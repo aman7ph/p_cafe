@@ -1,4 +1,5 @@
-import { Link, useParams } from "react-router-dom"
+import { Link, useParams, useNavigate } from "react-router-dom"
+
 import { Row, Col, ListGroup, Card, Button } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { setCart } from "../redux/slices/cartSlice"
@@ -17,6 +18,7 @@ import { FaArrowLeft } from "react-icons/fa"
 const OrderScreen = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const {
     data: order,
@@ -67,7 +69,13 @@ const OrderScreen = () => {
     )
     window.location.reload()
   }
-
+  const handleBack = () => {
+    if (userInfo) {
+      navigate(-1)
+    } else {
+      navigate("/")
+    }
+  }
   return isLoading ? (
     <Loader />
   ) : error || payerror ? (
@@ -78,12 +86,9 @@ const OrderScreen = () => {
     <>
       <h2>
         {" "}
-        <Link
-          to={userInfo ? `/admin/orderlist` : "/"}
-          className="btn btn-light mx-4"
-        >
+        <Button onClick={handleBack} className="btn btn-light mx-4">
           <FaArrowLeft /> go back
-        </Link>
+        </Button>
         {`Your Order Number -> `}
         <strong className="text-danger">
           {" "}

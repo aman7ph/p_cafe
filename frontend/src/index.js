@@ -47,6 +47,9 @@ import PaiedOrderlist from "./screens/admin/PaiedOrderlist"
 import ForgotePassword from "./screens/Forgotepassword"
 import Reset from "./screens/Reset"
 import Nomach from "./components/Nomach"
+import CreateWorkerScreen from "./screens/admin/CreateWorkerScreen"
+import UpdateWorkersScreen from "./screens/admin/UpdateWorkerScreen"
+import WorkerList from "./screens/admin/WorkerList"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -74,6 +77,9 @@ const router = createBrowserRouter(
         <Route path="/profile" element={<ProfileScreen />} />
       </Route>
       <Route path="" element={<AdminRouter />}>
+        <Route path="/admin/workerlist" element={<WorkerList />} />
+        <Route path="/admin/worker/:id" element={<UpdateWorkersScreen />} />
+        <Route path="/admin/worker/create" element={<CreateWorkerScreen />} />
         <Route
           path="/admin/material/create"
           element={<CreateMaterialsScreen />}

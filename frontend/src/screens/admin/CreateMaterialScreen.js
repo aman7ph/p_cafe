@@ -28,7 +28,7 @@ const CreateMaterialsScreen = () => {
         navigate("/admin/materiallist")
       }
     } catch (error) {
-      toast.error("Failed to create promotion")
+      toast.error("Failed to create material")
     }
   }
 

@@ -74,14 +74,6 @@ const MaterialList = () => {
             Materials
           </h2>
         </Col>
-        <Col className="text-right">
-          <LinkContainer to="/admin/material/create">
-            <Button className="my-3 btn-sm">
-              <FaPlus />
-              Create Materials
-            </Button>
-          </LinkContainer>
-        </Col>
       </Row>
       {isLoading ? (
         <Loader />

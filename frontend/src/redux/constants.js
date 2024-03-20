@@ -9,3 +9,4 @@ export const FEEDBACK_URL = `/api/feedback`
 export const PROMOTION_URL = `/api/promotions`
 export const MATERIAL_URL = `/api/materials`
 export const REPORT_URL = `/api/report`
+export const WORKER_URL = `/api/workers`
