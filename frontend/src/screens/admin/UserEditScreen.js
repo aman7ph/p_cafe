@@ -22,7 +22,7 @@ const UserEditScreen = () => {
     error,
     refetch,
   } = useGetUserDetailsQuery(userId)
-  console.log(user)
+
   const [updateUser, { isLoading: loadingUpdate }] = useUpdateUserMutation()
   const navigate = useNavigate()
   const submitHandler = async (e) => {

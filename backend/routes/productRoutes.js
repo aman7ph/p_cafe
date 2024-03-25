@@ -10,6 +10,7 @@ import {
   getAllProductForAdmin,
 } from "./../controller/productController.js"
 import { protect, admin } from "./../middleware/authMidleware.js"
+import { productValidation } from "./../middleware/order validation.js"
 
 const router = express.Router()
 
@@ -21,7 +22,7 @@ router
   .get(getProduct)
   .put(protect, admin, updateProduct)
   .delete(protect, admin, deleteProduct)
-router.route("/create").post(protect, admin, createProduct)
+router.route("/create").post(protect, admin, productValidation, createProduct)
 router.route("/:id/status").put(protect, admin, updateProductStatus)
 
 export default router

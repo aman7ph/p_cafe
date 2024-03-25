@@ -70,8 +70,8 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 const getOrders = asyncHandler(async (req, res) => {
   const pageSize = 8
   const page = Number(req.query.pageNumber) || 1
-  const count = await Order.countDocuments({})
-  const orders = await Order.find({})
+  const count = await Order.countDocuments({ isPaid: false })
+  const orders = await Order.find({ isPaid: false })
     .limit(pageSize)
     .skip(pageSize * (page - 1))
     .sort({ createdAt: -1 })
@@ -126,7 +126,10 @@ const getorderbyorderNumber = asyncHandler(async (req, res) => {
   let order
   console.log(req.params)
   if (isFourDigitNumber(req.params.orderNumber)) {
-    order = await Order.findOne({ orderNumber: req.params.orderNumber })
+    order = await Order.findOne({
+      orderNumber: req.params.orderNumber,
+      isPaid: false,
+    })
   } else {
     res.status(404)
     throw new Error("enter correct format number")
@@ -139,6 +142,26 @@ const getorderbyorderNumber = asyncHandler(async (req, res) => {
   res.status(200).json(order)
 })
 
+const paiedOrder = asyncHandler(async (req, res) => {
+  const pageSize = 8
+  const page = Number(req.query.pageNumber) || 1
+  const count = await Order.countDocuments({ isPaid: true })
+  const orders = await Order.find({ isPaid: true })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
+    .sort({ createdAt: -1 })
+  if (!orders) {
+    res.status(404)
+    throw new Error("Order not found")
+  }
+  res.status(200).json({
+    status: "success",
+    orders,
+    pages: Math.ceil(count / pageSize),
+    page,
+  })
+})
+
 export {
   addOrderItems,
   getOrderById,
@@ -147,4 +170,5 @@ export {
   updateOrderToDelivered,
   updateOrder,
   getorderbyorderNumber,
+  paiedOrder,
 }

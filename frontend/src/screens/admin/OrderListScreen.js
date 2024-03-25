@@ -4,14 +4,16 @@ import Loader from "../../components/Loader"
 import Message from "../../components/Message"
 import { useParams, Link } from "react-router-dom"
 import { LinkContainer } from "react-router-bootstrap"
-import { Table, Button } from "react-bootstrap"
+import { Table, Button, ListGroup } from "react-bootstrap"
 import { useGetAllOrdersQuery } from "../../redux/slices/orderApiSlice"
 import Paginate from "../../components/Paginate"
 
 const OrderListScreen = () => {
   const { pageNumber } = useParams()
-  const { data, isLoading, error } = useGetAllOrdersQuery({ pageNumber })
-  console.log(data)
+  const { data, isLoading, error } = useGetAllOrdersQuery({
+    pageNumber,
+  })
+
   return (
     <>
       <h2>
@@ -24,25 +26,42 @@ const OrderListScreen = () => {
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant="danger">{error}</Message>
+        <Message variant="danger">{error.data.message}</Message>
       ) : (
         <Table striped hover responsive className="table-sm">
           <thead>
             <tr>
               <th>ORDER_no</th>
               <th>USER</th>
-              <th>DATE</th>
-              <th>TOTAL</th>
+              <th>List</th>
+              <th>TOTAL PRICE</th>
               <th>PAID</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {data?.orders?.map((order) => (
-              <tr key={order._id}>
-                <td>{order.orderNumber || "1234"}</td>
+              <tr
+                key={order._id}
+                onClick={() => {
+                  window.location.href = `/order/${order._id}`
+                }}
+              >
+                <td>{order.orderNumber || "----"}</td>
                 <td>{order.owner}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
+                <td>
+                  {" "}
+                  {order.orderItems.map((item, index) => (
+                    <ListGroup.Item key={index}>
+                      <div>
+                        <p>
+                          {item.name}
+                          <strong>{`(${item.qty})`}</strong>
+                        </p>
+                      </div>
+                    </ListGroup.Item>
+                  ))}
+                </td>
                 <td>{order.totalPrice}</td>
                 <td>
                   {order.isPaid ? (
@@ -53,7 +72,7 @@ const OrderListScreen = () => {
                 </td>
                 <td>
                   <LinkContainer to={`/order/${order._id}`}>
-                    <Button variant="light" className="btn-sm">
+                    <Button variant="dark" className="btn-sm p-2">
                       Details
                     </Button>
                   </LinkContainer>
@@ -63,6 +82,7 @@ const OrderListScreen = () => {
           </tbody>
         </Table>
       )}
+
       <Paginate
         page={data?.page}
         pages={data?.pages}

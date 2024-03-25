@@ -2,7 +2,7 @@ import { Row, Col, Image } from "react-bootstrap"
 import { useGetAllPromotionsQuery } from "./../redux/slices/promotionApiSlice"
 
 const Promotion = () => {
-  const { data, isLoading, error } = useGetAllPromotionsQuery()
+  const { data } = useGetAllPromotionsQuery()
 
   return (
     <Row className="justify-content-center p-3 ms-5">

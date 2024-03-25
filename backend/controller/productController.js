@@ -57,7 +57,7 @@ export const createProduct = asyncHandler(async (req, res, next) => {
       name,
       user: req.user.id,
       category,
-      price,
+      price: Number(price),
       description,
       image,
     }

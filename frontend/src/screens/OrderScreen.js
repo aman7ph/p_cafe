@@ -1,5 +1,6 @@
-import { Link, useParams } from "react-router-dom"
-import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap"
+import { Link, useParams, useNavigate } from "react-router-dom"
+
+import { Row, Col, ListGroup, Card, Button } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { setCart } from "../redux/slices/cartSlice"
 import dateFormater from "../utils/dateFormater"
@@ -9,6 +10,7 @@ import {
 } from "./../redux/slices/orderApiSlice"
 import Loader from "../components/Loader"
 import Message from "../components/Message"
+import Recit from "../components/Recit"
 
 import { toast } from "react-toastify"
 import { FaArrowLeft } from "react-icons/fa"
@@ -16,6 +18,7 @@ import { FaArrowLeft } from "react-icons/fa"
 const OrderScreen = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const {
     data: order,
@@ -23,7 +26,8 @@ const OrderScreen = () => {
     isLoading,
     error,
   } = useGetOrderDetailByIdQuery(id)
-  const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation()
+  const [payOrder, { isLoading: loadingPay, error: payerror }] =
+    usePayOrderMutation()
 
   const { userInfo } = useSelector((state) => state.auth)
 
@@ -40,6 +44,7 @@ const OrderScreen = () => {
     }
   }
 
+  console.log(order)
   const updateOederHandler = () => {
     localStorage.setItem(
       "cart",
@@ -64,21 +69,26 @@ const OrderScreen = () => {
     )
     window.location.reload()
   }
-  console.log(order)
+  const handleBack = () => {
+    if (userInfo) {
+      navigate(-1)
+    } else {
+      navigate("/")
+    }
+  }
   return isLoading ? (
     <Loader />
-  ) : error ? (
-    <Message variant="danger">{error}</Message>
+  ) : error || payerror ? (
+    <Message variant="danger">
+      {error.data.message || payerror.data.message}
+    </Message>
   ) : (
     <>
       <h2>
         {" "}
-        <Link
-          to={userInfo ? `/admin/orderlist` : "/"}
-          className="btn btn-light mx-4"
-        >
+        <Button onClick={handleBack} className="btn btn-light mx-4">
           <FaArrowLeft /> go back
-        </Link>
+        </Button>
         {`Your Order Number -> `}
         <strong className="text-danger">
           {" "}
@@ -86,7 +96,7 @@ const OrderScreen = () => {
         </strong>
       </h2>
       <Row>
-        <Col md={8}>
+        <Col>
           <ListGroup variant="flush">
             {userInfo && (
               <ListGroup.Item>
@@ -108,14 +118,6 @@ const OrderScreen = () => {
                   {order.orderItems.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row>
-                        <Col md={1}>
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fluid
-                            rounded
-                          />
-                        </Col>
                         <Col>
                           <h4>
                             {item.name}
@@ -183,7 +185,7 @@ const OrderScreen = () => {
                             style={{ marginBottom: "10px" }}
                             onClick={onApproveTest}
                           >
-                            Order Paid
+                            Approve
                           </Button>
                         </div>
                       )}
@@ -204,6 +206,11 @@ const OrderScreen = () => {
             </ListGroup>
           </Card>
         </Col>
+        {userInfo && (
+          <Col md={4}>
+            <Recit order={order} />
+          </Col>
+        )}
       </Row>
     </>
   )

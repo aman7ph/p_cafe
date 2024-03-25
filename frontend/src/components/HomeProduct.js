@@ -3,13 +3,13 @@ import { Link } from "react-router-dom"
 
 const HomeProduct = ({ product }) => {
   return (
-    <Card className="my-3 p-3 rounded">
+    <Card className=" p-3 rounded h-100">
       <Link to={`/menu`}>
         <Card.Img src={product.image} variant="top" />
       </Link>
       <Card.Body>
         <Link to={`/menu`}>
-          <Card.Title as="div" className="product-title text-center">
+          <Card.Title as="div" className="product-title text-center m-0">
             <strong>{product.name}</strong>
           </Card.Title>
         </Link>

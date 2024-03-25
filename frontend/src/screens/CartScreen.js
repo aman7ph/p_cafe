@@ -19,7 +19,9 @@ const CartScreen = () => {
   const navigate = useNavigate()
   const [name, setName] = useState("")
   const [phone, setPhone] = useState("")
+
   const [ariveTime, setAriveTime] = useState("")
+  const [result, setResult] = useState("please fill all the fields correctly")
 
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
@@ -33,7 +35,9 @@ const CartScreen = () => {
 
   const [addOrderItems, { isLoading, error }] = useAddOrderItemsMutation()
   const [updateOrder, { isLoading: updateLoading }] = useUpdateOrderMutation()
+
   const PlaceOrderHandler = async () => {
+    if (!checkTimeRange()) return toast.error(result)
     try {
       const res = await addOrderItems({
         orderItems: cart.cartItems,
@@ -49,6 +53,9 @@ const CartScreen = () => {
     } catch (error) {
       toast.error(error?.data?.message || error.error)
     }
+  }
+  const handleClear = () => {
+    dispatch(clearCart())
   }
   const updateOederHandler = async () => {
     try {
@@ -76,6 +83,28 @@ const CartScreen = () => {
       setAriveTime(cart.ariveTime)
     }
   }, [cart.id, cart.owner, cart.phoneNumber, cart.ariveTime])
+
+  const checkTimeRange = () => {
+    const currentTime = new Date()
+    const currentHours = currentTime.getHours()
+    const currentMinutes = currentTime.getMinutes()
+
+    const currentTotalMinutes = currentHours * 60 + currentMinutes
+
+    const selectedHours = parseInt(ariveTime.substring(0, 2))
+    const selectedMinutes = parseInt(ariveTime.substring(3))
+
+    const selectedTotalMinutes = selectedHours * 60 + selectedMinutes
+
+    const timeDifference = selectedTotalMinutes - currentTotalMinutes
+
+    if (timeDifference >= 0 && timeDifference <= 480) {
+      return true
+    } else {
+      setResult("Error: Selected time is not within 8 hours from now.")
+      return false
+    }
+  }
 
   return (
     <Row>
@@ -169,7 +198,7 @@ const CartScreen = () => {
                 <Col>ariveTime</Col>
                 <Col>
                   <Form.Control
-                    type="date"
+                    type="time"
                     value={ariveTime}
                     onChange={(e) => setAriveTime(e.target.value)}
                   ></Form.Control>
@@ -200,6 +229,14 @@ const CartScreen = () => {
                     onClick={PlaceOrderHandler}
                   >
                     Place Order
+                  </Button>
+                  <Button
+                    type="button"
+                    className="btn-block mx-2"
+                    disabled={cart.cartItems === 0}
+                    onClick={handleClear}
+                  >
+                    clear cart
                   </Button>
                   {isLoading && <Loader />}
                 </div>

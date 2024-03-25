@@ -9,10 +9,13 @@ import uploadRouter from "./routes/uploadRoutes.js"
 import feedbackRouter from "./routes/feedbackRoute.js"
 import promotionRouter from "./routes/promotionRoute.js"
 import materialRouter from "./routes/materialRoute.js"
+import reportRouter from "./routes/reportRoute.js"
+import workerRouter from "./routes/workerRoute.js"
 import { notFound, errorHandler } from "./middleware/errorMidleware.js"
 import morgan from "morgan"
 import cookieParser from "cookie-parser"
 
+import { deleteExpiredOrdersJob } from "./jobs/deleteExpiredOrdersJob.js"
 dotenv.config()
 
 const port = process.env.PORT || 5050
@@ -31,6 +34,9 @@ app.use("/api/uploads", uploadRouter)
 app.use("/api/feedback", feedbackRouter)
 app.use("/api/promotions", promotionRouter)
 app.use("/api/materials", materialRouter)
+app.use("/api/report", reportRouter)
+app.use("/api/workers", workerRouter)
+
 const __dirname = path.resolve()
 console.log(__dirname)
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")))
@@ -48,6 +54,8 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(notFound)
 app.use(errorHandler)
+
+deleteExpiredOrdersJob.start()
 
 app.listen(port, () => {
   console.log(`server runing on port ${port}`)
