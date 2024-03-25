@@ -28,6 +28,7 @@ const workerSchema = new Schema({
     type: String,
     required: true,
   },
+  balanceHistory: [String],
 })
 
 const Worker = model("Worker", workerSchema)

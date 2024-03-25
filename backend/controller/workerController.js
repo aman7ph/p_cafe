@@ -78,12 +78,17 @@ const deleteWorker = asyncHandler(async (req, res, next) => {
 
 const addNegativeBalance = asyncHandler(async (req, res, next) => {
   const { id } = req.params
+  const { reason } = req.body
+
   const worker = await Worker.findById(id)
   if (!worker) {
     res.status(404)
     throw new Error("Worker not found")
   }
   worker.negativeBalance = worker.negativeBalance + req.body.negativeBalance
+  worker.balanceHistory.push(
+    `+${req.body.negativeBalance} -${reason || "added"}`
+  )
   const updatedWorker = await worker.save()
   res.status(200).json({
     status: "success",
@@ -93,12 +98,16 @@ const addNegativeBalance = asyncHandler(async (req, res, next) => {
 
 const subtractNegativeBalance = asyncHandler(async (req, res, next) => {
   const { id } = req.params
+  const { reason } = req.body
   const worker = await Worker.findById(id)
   if (!worker) {
     res.status(404)
     throw new Error("Worker not found")
   }
   worker.negativeBalance = worker.negativeBalance - req.body.negativeBalance
+  worker.balanceHistory.push(
+    `-${req.body.negativeBalance}- ${reason || "substracted"}`
+  )
   const updatedWorker = await worker.save()
   res.status(200).json({
     status: "success",

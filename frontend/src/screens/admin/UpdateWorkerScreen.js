@@ -2,10 +2,13 @@ import { useEffect, useState } from "react"
 import { Form, Button } from "react-bootstrap"
 import Loader from "../../components/Loader"
 import Message from "../../components/Message"
+import { FaPlusCircle, FaMinusCircle } from "react-icons/fa"
 import FormContainer from "../../components/FormContainer"
 import {
   useGetWorkerByIdQuery,
   useUpdateWorkerMutation,
+  useAddNegativeBalanceMutation,
+  useSubtractNegativeBalanceMutation,
 } from "../../redux/slices/workerApiSlice"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -17,11 +20,46 @@ const UpdateWorkerScreen = () => {
   const [salary, setSalary] = useState(0)
   const [address, setAddress] = useState("")
   const [phoneNumber, setPhoneNumber] = useState("")
+  const [balance, setBalance] = useState(0)
+  const [balanceHistory, setBalanceHistory] = useState([])
+  const [num, setNum] = useState(0)
+  const [reason, setReason] = useState("")
+  const [addBallance] = useAddNegativeBalanceMutation()
+  const [substractBalance] = useSubtractNegativeBalanceMutation()
 
-  const { data: worker, isLoading, error } = useGetWorkerByIdQuery(workerId)
+  const {
+    data: worker,
+    isLoading,
+    error,
+    refetch,
+  } = useGetWorkerByIdQuery(workerId)
 
   const [updateWorker, { isLoading: loadingUpdate }] = useUpdateWorkerMutation()
   const navigate = useNavigate()
+  const addBalanceHandler = async (id) => {
+    try {
+      await addBallance({ id, negativeBalance: num, reason: reason })
+      refetch()
+      setNum(0)
+      setReason("")
+      toast.success("balance added")
+    } catch (error) {
+      toast.error(error?.data?.message || error.error)
+    }
+  }
+
+  const substractBalanceHandler = async (id) => {
+    try {
+      await substractBalance({ id, negativeBalance: num, reason: reason })
+      setNum(0)
+      setReason("")
+      refetch()
+      toast.success("balance substracted")
+    } catch (error) {
+      toast.error(error?.data?.message || error.error)
+    }
+  }
+
   const submitHandler = async (e) => {
     e.preventDefault()
     try {
@@ -50,11 +88,13 @@ const UpdateWorkerScreen = () => {
       setSalary(worker.salary)
       setAddress(worker.address)
       setPhoneNumber(worker.phoneNumber)
+      setBalance(worker.negativeBalance)
+      setBalanceHistory(worker.balanceHistory)
     }
   }, [worker])
   return (
     <>
-      <Link to="admin/workerlist" className="btn btn-light ">
+      <Link to="/admin/workerlist" className="btn btn-light ">
         Go Back
       </Link>
       <FormContainer>
@@ -124,6 +164,65 @@ const UpdateWorkerScreen = () => {
           </Form>
         )}
       </FormContainer>
+
+      <div className="my-4">
+        <FormContainer className=" ">
+          <h3>
+            Negetive Balance <span className="text-danger">-{balance}</span>
+          </h3>
+
+          <Form.Group controlId="num">
+            <Form.Control
+              type="number"
+              placeholder="Enter number"
+              value={num}
+              onChange={(e) => setNum(Number(e.target.value))}
+            ></Form.Control>
+            <Form.Control
+              type="text"
+              placeholder="Enter reason"
+              className="my-2"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
+          <div className=" mt-2 mx-2">
+            <Button
+              type="button"
+              variant="secondary"
+              className="btn"
+              onClick={() => {
+                addBalanceHandler(worker._id)
+              }}
+            >
+              <FaPlusCircle />
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              className="btn mx-3"
+              onClick={() => {
+                substractBalanceHandler(worker._id)
+              }}
+            >
+              <FaMinusCircle />
+            </Button>
+          </div>
+          <div className=" mt-3">
+            <p>balance histoty</p>
+            {balanceHistory.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  className="d-flex justify-content-between border"
+                >
+                  <p>{item}</p>
+                </div>
+              )
+            })}
+          </div>
+        </FormContainer>
+      </div>
     </>
   )
 }

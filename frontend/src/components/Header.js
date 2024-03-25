@@ -93,6 +93,13 @@ const Header = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
               )}
+              {!user && (
+                <LinkContainer to="/about">
+                  <Nav.Link>
+                    <h6>About</h6>
+                  </Nav.Link>
+                </LinkContainer>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

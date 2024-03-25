@@ -49,11 +49,13 @@ import Nomach from "./components/Nomach"
 import CreateWorkerScreen from "./screens/admin/CreateWorkerScreen"
 import UpdateWorkersScreen from "./screens/admin/UpdateWorkerScreen"
 import WorkerList from "./screens/admin/WorkerList"
+import About from "./screens/About"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index={true} path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
       <Route path="/menu" element={<MenuPage />} />
       <Route path="/page/:pageNumber" element={<MenuPage />} />
       <Route path="/search/:keyword" element={<MenuPage />} />

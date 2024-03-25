@@ -1,26 +1,21 @@
-import { FaTrash, FaEdit, FaPlusCircle, FaMinusCircle } from "react-icons/fa"
+import { FaTrash, FaEdit } from "react-icons/fa"
 import Loader from "../../components/Loader"
 import Message from "../../components/Message"
 import { LinkContainer } from "react-router-bootstrap"
-import { Table, Button, Row, Col, Form } from "react-bootstrap"
+import { Table, Button, Row, Col } from "react-bootstrap"
 import {
   useDeleteWorkerMutation,
-  useSubtractNegativeBalanceMutation,
   useGetWorkersQuery,
-  useAddNegativeBalanceMutation,
 } from "../../redux/slices/workerApiSlice"
 import { toast } from "react-toastify"
-import { useParams, Link } from "react-router-dom"
-import Paginate from "../../components/Paginate"
-import { useState } from "react"
+import { Link } from "react-router-dom"
+
 import { FaArrowLeft } from "react-icons/fa"
 
 const WorkerList = () => {
   let { data, isLoading, error, refetch } = useGetWorkersQuery()
-  const [num, setNum] = useState(0)
+
   const [deleteWorker, { error: deleteerror }] = useDeleteWorkerMutation()
-  const [addBallance] = useAddNegativeBalanceMutation()
-  const [substractBalance] = useSubtractNegativeBalanceMutation()
 
   const deleteHandler = async (id) => {
     if (window.confirm("Are you sure?")) {
@@ -31,27 +26,6 @@ const WorkerList = () => {
       } catch (error) {
         toast.error(error?.data?.message || error.error)
       }
-    }
-  }
-
-  const addBalanceHandler = async (id) => {
-    try {
-      await addBallance({ id, negativeBalance: num })
-      refetch()
-      toast.success("balance added")
-    } catch (error) {
-      toast.error(error?.data?.message || error.error)
-    }
-  }
-
-  const substractBalanceHandler = async (id) => {
-    console.log("substractMaterialHandler")
-    try {
-      await substractBalance({ id, negativeBalance: num })
-      refetch()
-      toast.success("balance substracted")
-    } catch (error) {
-      toast.error(error?.data?.message || error.error)
     }
   }
 
@@ -82,6 +56,7 @@ const WorkerList = () => {
               <th>PHONE</th>
               <th>ADDRESS</th>
               <th>POSSITION</th>
+              <th>SALARY</th>
               <th> BALANCE</th>
               <th>ACTIONS</th>
             </tr>
@@ -93,58 +68,26 @@ const WorkerList = () => {
                 <td>{worker.phoneNumber}</td>
                 <td>{worker.address}</td>
                 <td>{worker.possition}</td>
+                <td>{worker.salary}</td>
                 <td>{worker.negativeBalance}</td>
-                <td>
-                  <Form className="d-flex">
-                    <Form.Group controlId="num">
-                      <Form.Control
-                        type="number"
-                        placeholder="Enter number"
-                        value={num}
-                        onChange={(e) => setNum(Number(e.target.value))}
-                      ></Form.Control>
-                    </Form.Group>
-                    <div className=" mt-2 mx-2">
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        className="btn-sm"
-                        onClick={() => {
-                          addBalanceHandler(worker._id)
-                        }}
-                      >
-                        <FaPlusCircle />
+
+                <td className="d-flex">
+                  <div className=" mx-2">
+                    <LinkContainer to={`/admin/worker/${worker._id}`}>
+                      <Button variant="secondary" className="btn">
+                        <FaEdit /> detail
                       </Button>
-                    </div>
-                    <div className=" mt-2 mx-2">
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        className="btn-sm"
-                        onClick={() => {
-                          substractBalanceHandler(worker._id)
-                        }}
-                      >
-                        <FaMinusCircle />
-                      </Button>
-                    </div>
-                    <div className="mt-2 mx-2">
-                      <LinkContainer to={`/admin/worker/${worker._id}`}>
-                        <Button variant="secondary" className="btn-sm">
-                          <FaEdit />
-                        </Button>
-                      </LinkContainer>
-                    </div>
-                    <div className="mt-2 mx-2">
-                      <Button
-                        variant="danger"
-                        className="btn-sm"
-                        onClick={() => deleteHandler(worker._id)}
-                      >
-                        <FaTrash style={{ color: "white" }} />
-                      </Button>
-                    </div>
-                  </Form>
+                    </LinkContainer>
+                  </div>
+                  <div className="mx-2">
+                    <Button
+                      variant="danger"
+                      className="btn"
+                      onClick={() => deleteHandler(worker._id)}
+                    >
+                      <FaTrash style={{ color: "white" }} />
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}
