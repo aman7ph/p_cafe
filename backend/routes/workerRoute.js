@@ -6,10 +6,10 @@ import {
   deleteWorker,
   addNegativeBalance,
   subtractNegativeBalance,
-} from "../controller/mongo/workerController.js";
+} from "../controller/pg/workerController.js";
 import express from "express";
 const router = express.Router();
-import { protect, admin } from "../middleware/authMidleware.js";
+import { protect, admin } from "../middleware/authMidlewarePG.js";
 import { workerValidation } from "./../middleware/order validation.js";
 router
   .route("/")
