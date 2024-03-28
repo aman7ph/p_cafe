@@ -26,8 +26,7 @@ const ProductList = () => {
 
   const [updateProductStatus] = useGetUpdateStatusMutation()
 
-  const [deleteProduct, { isLoading: loadingDelete, error: loadingError }] =
-    useDeleteProductMutation()
+  const [deleteProduct, { error: payerror }] = useDeleteProductMutation()
 
   const deleteHandler = async (id) => {
     if (window.confirm("Are you sure?")) {
@@ -91,8 +90,10 @@ const ProductList = () => {
       </Row>
       {isLoading ? (
         <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
+      ) : error || payerror ? (
+        <Message variant="danger">
+          {error.data.message || payerror.data.message}
+        </Message>
       ) : (
         <Table striped hover responsive className="table-sm">
           <thead>

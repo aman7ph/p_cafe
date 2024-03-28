@@ -1,5 +1,5 @@
 import { Navbar, Container, Nav, Badge, NavDropdown } from "react-bootstrap"
-import { FaUser, FaShoppingCart } from "react-icons/fa"
+import { FaShoppingCart } from "react-icons/fa"
 import { LinkContainer } from "react-router-bootstrap"
 import { useSelector, useDispatch } from "react-redux"
 import { logout } from "../redux/slices/authSlice"
@@ -44,9 +44,9 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              {!user && location.pathname === "/menu" ? (
+              {!user && location.pathname !== "/cart" ? (
                 <SearchBox />
-              ) : !user && location.pathname === "/" ? (
+              ) : !user && location.pathname === "/cart" ? (
                 <SearchOrder />
               ) : (
                 <SearchOrder />
@@ -79,7 +79,7 @@ const Header = () => {
                   </Nav.Link>
                 </LinkContainer>
               )}
-              {user ? (
+              {user && (
                 <NavDropdown as="h6" title={user.name} id="username">
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
@@ -92,32 +92,14 @@ const Header = () => {
                     Logout
                   </NavDropdown.Item>
                 </NavDropdown>
-              ) : (
-                <LinkContainer to="/login">
+              )}
+              {!user && (
+                <LinkContainer to="/about">
                   <Nav.Link>
-                    <FaUser /> sign In
+                    <h6>About</h6>
                   </Nav.Link>
                 </LinkContainer>
               )}
-              {/* {user && user.role === "admin" && (
-                <NavDropdown title="Admin" id="adminmenu">
-                  <LinkContainer to="/admin/userlist">
-                    <NavDropdown.Item>Users</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/productlist">
-                    <NavDropdown.Item>Products</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/orderlist">
-                    <NavDropdown.Item>Orders</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/promotionlist">
-                    <NavDropdown.Item>promotion</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/materiallist">
-                    <NavDropdown.Item>Materials</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
-              )} */}
             </Nav>
           </Navbar.Collapse>
         </Container>

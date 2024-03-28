@@ -20,7 +20,6 @@ import Home from "./screens/Home"
 import ProductDetail from "./screens/ProductDetail"
 import CartScreen from "./screens/CartScreen"
 import LoginScreen from "./screens/LoginScreen"
-//import RegisterScreen from "./screens/RegisterScreen"
 
 import PrivateRouter from "./components/PrivateRouter"
 
@@ -29,6 +28,7 @@ import ProfileScreen from "./screens/ProfileScreen"
 import AdminRouter from "./components/AdminRoute"
 import OrderListScreen from "./screens/admin/OrderListScreen"
 import ProductList from "./screens/admin/ProductList"
+import Report from "./screens/admin/Report"
 import ProductUpdateScreen from "./screens/admin/ProductUpdateScreen"
 import CreateProductScreen from "./screens/admin/CreateProductScreen"
 import UsersList from "./screens/admin/UsersList"
@@ -42,13 +42,20 @@ import CreateMaterialsScreen from "./screens/admin/CreateMaterialScreen"
 import FeedbackList from "./screens/admin/FeedbackList"
 import FeedbackDetail from "./screens/admin/FeedbackDetail"
 import OrderNumber from "./screens/OrderNumber"
+import PaiedOrderlist from "./screens/admin/PaiedOrderlist"
 import ForgotePassword from "./screens/Forgotepassword"
 import Reset from "./screens/Reset"
+import Nomach from "./components/Nomach"
+import CreateWorkerScreen from "./screens/admin/CreateWorkerScreen"
+import UpdateWorkersScreen from "./screens/admin/UpdateWorkerScreen"
+import WorkerList from "./screens/admin/WorkerList"
+import About from "./screens/About"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index={true} path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
       <Route path="/menu" element={<MenuPage />} />
       <Route path="/page/:pageNumber" element={<MenuPage />} />
       <Route path="/search/:keyword" element={<MenuPage />} />
@@ -61,7 +68,6 @@ const router = createBrowserRouter(
       <Route path="/product/:id" element={<ProductDetail />} />
       <Route path="/cart" element={<CartScreen />} />
       <Route path="/login" element={<LoginScreen />} />
-      {/* <Route path="/register" element={<RegisterScreen />} /> */}
       <Route path="/forgotpassword" element={<ForgotePassword />} />
       <Route path="/reset/:token" element={<Reset />} />
       <Route path="/order/:id" element={<OrderScreen />} />
@@ -71,6 +77,9 @@ const router = createBrowserRouter(
         <Route path="/profile" element={<ProfileScreen />} />
       </Route>
       <Route path="" element={<AdminRouter />}>
+        <Route path="/admin/workerlist" element={<WorkerList />} />
+        <Route path="/admin/worker/:id" element={<UpdateWorkersScreen />} />
+        <Route path="/admin/worker/create" element={<CreateWorkerScreen />} />
         <Route
           path="/admin/material/create"
           element={<CreateMaterialsScreen />}
@@ -81,6 +90,11 @@ const router = createBrowserRouter(
           element={<MaterialList />}
         />
         <Route path="/admin/orderlist" element={<OrderListScreen />} />
+        <Route path="/admin/paiedorderlist" element={<PaiedOrderlist />} />
+        <Route
+          path="/admin/paiedorderlist/:pageNumber"
+          element={<PaiedOrderlist />}
+        />
         <Route
           path="/admin/orderlist/:pageNumber"
           element={<OrderListScreen />}
@@ -95,6 +109,7 @@ const router = createBrowserRouter(
           path="/admin/productlist/:pageNumber"
           element={<ProductList />}
         />
+        <Route path="/admin/reports" element={<Report />} />
         <Route path="/admin/product/:id" element={<ProductUpdateScreen />} />
         <Route path="/admin/product/create" element={<CreateProductScreen />} />
         <Route path="/admin/userlist" element={<UsersList />} />
@@ -115,6 +130,7 @@ const router = createBrowserRouter(
         />
         <Route path="/admin/feedback/:id" element={<FeedbackDetail />} />
       </Route>
+      <Route path="*" element={<Nomach />} />
     </Route>
   )
 )

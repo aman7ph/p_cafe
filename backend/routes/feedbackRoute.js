@@ -1,14 +1,16 @@
-import express from "express"
+import express from "express";
 import {
   createFeedback,
   getFeedbacks,
-  getFeedbackByid,
+  getFeedbackById,
   deleteFeedback,
-} from "../controller/feedbackController.js"
+} from "../controller/pg/feedbackController.js";
+import { protect, admin } from "./../middleware/authMidlewarePG.js";
 
-const router = express.Router()
+const router = express.Router();
+router.route("/").post(createFeedback);
+router.use(protect, admin);
+router.route("/").get(getFeedbacks);
+router.route("/:id").get(getFeedbackById).delete(deleteFeedback);
 
-router.route("/").post(createFeedback).get(getFeedbacks)
-router.route("/:id").get(getFeedbackByid).delete(deleteFeedback)
-
-export default router
+export default router;

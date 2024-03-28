@@ -1,25 +1,20 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Form, Button, Row, Col } from "react-bootstrap"
 import FormContainer from "../components/FormContainer"
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { useSelector } from "react-redux"
 import Loader from "../components/Loader"
 import { toast } from "react-toastify"
 import { useResetPasswordMutation } from "../redux/slices/userApiSlice"
-import { setCredentials } from "../redux/slices/authSlice"
 
 const Reset = () => {
   const { token } = useParams()
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
 
-  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const [resetPassword, { isLoading }] = useResetPasswordMutation()
-
-  const { userInfo } = useSelector((state) => state.auth)
-  console.log(userInfo)
 
   const submitHandler = async (e) => {
     e.preventDefault()

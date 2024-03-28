@@ -1,5 +1,5 @@
-import { Link, useParams } from "react-router-dom"
-import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap"
+import { useNavigate, useParams } from "react-router-dom"
+import { Row, Col, ListGroup, Card, Button } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { setCart } from "../redux/slices/cartSlice"
 import dateFormater from "../utils/dateFormater"
@@ -13,9 +13,10 @@ import Message from "../components/Message"
 import { toast } from "react-toastify"
 import { FaArrowLeft } from "react-icons/fa"
 import { useEffect } from "react"
+import Recit from "../components/Recit"
 
 const OrderNumber = () => {
-  console.log(useParams())
+  const navigate = useNavigate()
   const { orderNumber } = useParams()
 
   const dispatch = useDispatch()
@@ -26,7 +27,8 @@ const OrderNumber = () => {
     isLoading,
     error,
   } = useGetOrderBYorderNumberQuery(orderNumber)
-  const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation()
+  const [payOrder, { isLoading: loadingPay, error: payerror }] =
+    usePayOrderMutation()
   console.log(useGetOrderBYorderNumberQuery(orderNumber))
 
   console.log(order)
@@ -68,24 +70,30 @@ const OrderNumber = () => {
     )
     window.location.reload()
   }
+  const handleBack = () => {
+    if (userInfo) {
+      navigate(-1)
+    } else {
+      navigate("/")
+    }
+  }
   useEffect(() => {
     refetch()
-  }, [])
+  }, [refetch])
 
   return isLoading ? (
     <Loader />
-  ) : error ? (
-    <Message variant="danger">{error.data.message}</Message>
+  ) : error || payerror ? (
+    <Message variant="danger">
+      {error.data.message || payerror.data.message}
+    </Message>
   ) : (
     <>
       <h2>
         {" "}
-        <Link
-          to={userInfo ? `/admin/orderlist` : "/"}
-          className="btn btn-light mx-4"
-        >
+        <Button onClick={handleBack} className="btn btn-light mx-4">
           <FaArrowLeft /> go back
-        </Link>
+        </Button>
         {`Your Order Number ->`}
         <strong className="text-danger">
           {" "}
@@ -115,14 +123,6 @@ const OrderNumber = () => {
                   {order.orderItems.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row>
-                        <Col md={1}>
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fluid
-                            rounded
-                          />
-                        </Col>
                         <Col>
                           <h4>
                             {item.name}
@@ -189,12 +189,18 @@ const OrderNumber = () => {
                 )}
                 {userInfo && !order.isPaid && (
                   <div>
-                    <Button
-                      style={{ marginBottom: "10px" }}
-                      onClick={() => onApproveTest(order._id)}
-                    >
-                      Order Paid
-                    </Button>
+                    {loadingPay ? (
+                      <Loader />
+                    ) : (
+                      <>
+                        <Button
+                          style={{ marginBottom: "10px" }}
+                          onClick={() => onApproveTest(order._id)}
+                        >
+                          Aprove
+                        </Button>
+                      </>
+                    )}
                   </div>
                 )}
               </ListGroup.Item>
@@ -202,6 +208,11 @@ const OrderNumber = () => {
           </Card>
         </Col>
       </Row>
+      {userInfo && (
+        <Col md={4}>
+          <Recit order={order} />
+        </Col>
+      )}
     </>
   )
 }

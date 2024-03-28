@@ -32,7 +32,7 @@ const FeedbackDetail = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Date</Col>
-                  <Col>{dateFormater(feedback.createdAt)}</Col>
+                  <Col>{dateFormater(feedback.created_at)}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>

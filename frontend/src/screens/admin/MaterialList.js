@@ -10,13 +10,12 @@ import {
   useSubstractMaterialsMutation,
 } from "../../redux/slices/MaterialApiSlice"
 import { toast } from "react-toastify"
-import { useParams, useNavigate, Link } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 import Paginate from "../../components/Paginate"
 import { useState } from "react"
 import { FaArrowLeft } from "react-icons/fa"
 
 const MaterialList = () => {
-  const navigate = useNavigate()
   const [num, setNum] = useState(0)
   const { pageNumber } = useParams()
 
@@ -24,7 +23,7 @@ const MaterialList = () => {
     pageNumber,
   })
 
-  const [deleteProduct, { isLoading: loadingDelete, error: loadingError }] =
+  const [deleteProduct, { error: deleteerror }] =
     useDeleteMaterialByIdMutation()
   const [addMaterial] = useAddMaterialsMutation()
   const [substractMaterial] = useSubstractMaterialsMutation()
@@ -44,7 +43,7 @@ const MaterialList = () => {
   const addMaterialHandler = async (id) => {
     console.log("addMaterialHandler")
     try {
-      await addMaterial({ id, addedNumber: num })
+      await addMaterial({ id, added_number: num })
       refetch()
       toast.success("Material added")
     } catch (error) {
@@ -55,7 +54,7 @@ const MaterialList = () => {
   const substractMaterialHandler = async (id) => {
     console.log("substractMaterialHandler")
     try {
-      await substractMaterial({ id, damagedNumber: num })
+      await substractMaterial({ id, damaged_number: num })
       refetch()
       toast.success("Material substracted")
     } catch (error) {
@@ -75,19 +74,13 @@ const MaterialList = () => {
             Materials
           </h2>
         </Col>
-        <Col className="text-right">
-          <LinkContainer to="/admin/material/create">
-            <Button className="my-3 btn-sm">
-              <FaPlus />
-              Create Materials
-            </Button>
-          </LinkContainer>
-        </Col>
       </Row>
       {isLoading ? (
         <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
+      ) : error || deleteerror ? (
+        <Message variant="danger">
+          {error.data.message || deleteerror.data.message}
+        </Message>
       ) : (
         <Table striped hover responsive className="table-sm">
           <thead>
@@ -104,13 +97,16 @@ const MaterialList = () => {
           </thead>
           <tbody>
             {data.materials.map((material) => (
-              <tr key={material._id}>
+              <tr key={material.id}>
                 <td>{material.name}</td>
-                <td>{material.initialNumber}</td>
-                <td>{material.damagedNumber}</td>
-                <td>{material.remainingNumber}</td>
-                <td>{material.addedNumber}</td>
-                <td>{material.initialNumber + material.addedNumber}</td>
+                <td>{material.initial_number}</td>
+                <td>{material.damaged_number}</td>
+                <td>{material.remaining_number}</td>
+                <td>{material.added_number}</td>
+                <td>
+                  {Number(material.initial_number) +
+                    Number(material.added_number)}
+                </td>
                 <td>
                   <Form className="d-flex">
                     <Form.Group controlId="num">
@@ -125,7 +121,7 @@ const MaterialList = () => {
                       type="button"
                       variant="light"
                       onClick={() => {
-                        addMaterialHandler(material._id)
+                        addMaterialHandler(material.id)
                       }}
                     >
                       <FaPlusCircle />
@@ -134,7 +130,7 @@ const MaterialList = () => {
                       type="button"
                       variant="light"
                       onClick={() => {
-                        substractMaterialHandler(material._id)
+                        substractMaterialHandler(material.id)
                       }}
                     >
                       <FaMinusCircle />
@@ -145,7 +141,7 @@ const MaterialList = () => {
                   <Button
                     variant="danger"
                     className="btn-sm"
-                    onClick={() => deleteHandler(material._id)}
+                    onClick={() => deleteHandler(material.id)}
                   >
                     <FaTrash style={{ color: "white" }} />
                   </Button>
