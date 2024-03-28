@@ -28,6 +28,7 @@ const WorkerList = () => {
       }
     }
   }
+  console.log(data)
 
   return (
     <>
@@ -57,23 +58,23 @@ const WorkerList = () => {
               <th>ADDRESS</th>
               <th>POSSITION</th>
               <th>SALARY</th>
-              <th> BALANCE</th>
+              <th>BALANCE</th>
               <th>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
             {data?.workers?.map((worker) => (
-              <tr key={worker._id}>
+              <tr key={worker.id}>
                 <td>{worker.name}</td>
-                <td>{worker.phoneNumber}</td>
+                <td>{worker.phone_number}</td>
                 <td>{worker.address}</td>
-                <td>{worker.possition}</td>
+                <td>{worker.position}</td>
                 <td>{worker.salary}</td>
-                <td>{worker.negativeBalance}</td>
+                <td>{worker.negative_balance}</td>
 
                 <td className="d-flex">
                   <div className=" mx-2">
-                    <LinkContainer to={`/admin/worker/${worker._id}`}>
+                    <LinkContainer to={`/admin/worker/${worker.id}`}>
                       <Button variant="secondary" className="btn">
                         <FaEdit /> detail
                       </Button>
@@ -83,7 +84,7 @@ const WorkerList = () => {
                     <Button
                       variant="danger"
                       className="btn"
-                      onClick={() => deleteHandler(worker._id)}
+                      onClick={() => deleteHandler(worker.id)}
                     >
                       <FaTrash style={{ color: "white" }} />
                     </Button>

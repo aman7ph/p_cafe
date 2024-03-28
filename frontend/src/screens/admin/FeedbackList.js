@@ -64,7 +64,7 @@ const FeedbackList = () => {
           </thead>
           <tbody>
             {data.feedbacks.map((feedback) => (
-              <tr key={feedback._id}>
+              <tr key={feedback.feedback_id}>
                 <td>{feedback.name}</td>
                 <td>{feedback.email}</td>
                 <td>{feedback.comment}</td>
@@ -72,11 +72,11 @@ const FeedbackList = () => {
                   <Button
                     variant="danger"
                     className="btn-sm"
-                    onClick={() => deleteHandler(feedback._id)}
+                    onClick={() => deleteHandler(feedback.feedback_id)}
                   >
                     <FaTrash style={{ color: "white" }} />
                   </Button>
-                  <LinkContainer to={`/admin/feedback/${feedback._id}`}>
+                  <LinkContainer to={`/admin/feedback/${feedback.feedback_id}`}>
                     <Button variant="light" className="btn-sm">
                       Details
                     </Button>

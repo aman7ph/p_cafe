@@ -33,6 +33,7 @@ const UpdateWorkerScreen = () => {
     error,
     refetch,
   } = useGetWorkerByIdQuery(workerId)
+  console.log(worker)
 
   const [updateWorker, { isLoading: loadingUpdate }] = useUpdateWorkerMutation()
   const navigate = useNavigate()
@@ -66,10 +67,10 @@ const UpdateWorkerScreen = () => {
       const data = await updateWorker({
         workerId,
         name,
-        possition,
+        position: possition,
         salary,
         address,
-        phoneNumber,
+        phone_number: phoneNumber,
       })
 
       if (data) {
@@ -84,12 +85,12 @@ const UpdateWorkerScreen = () => {
   useEffect(() => {
     if (worker) {
       setName(worker.name)
-      setPossition(worker.possition)
+      setPossition(worker.position)
       setSalary(worker.salary)
       setAddress(worker.address)
-      setPhoneNumber(worker.phoneNumber)
-      setBalance(worker.negativeBalance)
-      setBalanceHistory(worker.balanceHistory)
+      setPhoneNumber(worker.phone_number)
+      setBalance(worker.negative_balance)
+      setBalanceHistory(worker.balance_history)
     }
   }, [worker])
   return (
@@ -168,7 +169,8 @@ const UpdateWorkerScreen = () => {
       <div className="my-4">
         <FormContainer className=" ">
           <h3>
-            Negetive Balance <span className="text-danger">-{balance}</span>
+            Negetive Balance{" "}
+            <span className="text-danger">{`(${balance})`}</span>
           </h3>
 
           <Form.Group controlId="num">
@@ -192,7 +194,7 @@ const UpdateWorkerScreen = () => {
               variant="secondary"
               className="btn"
               onClick={() => {
-                addBalanceHandler(worker._id)
+                addBalanceHandler(worker.id)
               }}
             >
               <FaPlusCircle />
@@ -202,7 +204,7 @@ const UpdateWorkerScreen = () => {
               variant="secondary"
               className="btn mx-3"
               onClick={() => {
-                substractBalanceHandler(worker._id)
+                substractBalanceHandler(worker.id)
               }}
             >
               <FaMinusCircle />
@@ -210,7 +212,7 @@ const UpdateWorkerScreen = () => {
           </div>
           <div className=" mt-3">
             <p>balance histoty</p>
-            {balanceHistory.map((item, index) => {
+            {balanceHistory?.map((item, index) => {
               return (
                 <div
                   key={index}

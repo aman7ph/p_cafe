@@ -43,7 +43,7 @@ const MaterialList = () => {
   const addMaterialHandler = async (id) => {
     console.log("addMaterialHandler")
     try {
-      await addMaterial({ id, addedNumber: num })
+      await addMaterial({ id, added_number: num })
       refetch()
       toast.success("Material added")
     } catch (error) {
@@ -54,7 +54,7 @@ const MaterialList = () => {
   const substractMaterialHandler = async (id) => {
     console.log("substractMaterialHandler")
     try {
-      await substractMaterial({ id, damagedNumber: num })
+      await substractMaterial({ id, damaged_number: num })
       refetch()
       toast.success("Material substracted")
     } catch (error) {
@@ -97,13 +97,16 @@ const MaterialList = () => {
           </thead>
           <tbody>
             {data.materials.map((material) => (
-              <tr key={material._id}>
+              <tr key={material.id}>
                 <td>{material.name}</td>
-                <td>{material.initialNumber}</td>
-                <td>{material.damagedNumber}</td>
-                <td>{material.remainingNumber}</td>
-                <td>{material.addedNumber}</td>
-                <td>{material.initialNumber + material.addedNumber}</td>
+                <td>{material.initial_number}</td>
+                <td>{material.damaged_number}</td>
+                <td>{material.remaining_number}</td>
+                <td>{material.added_number}</td>
+                <td>
+                  {Number(material.initial_number) +
+                    Number(material.added_number)}
+                </td>
                 <td>
                   <Form className="d-flex">
                     <Form.Group controlId="num">
@@ -118,7 +121,7 @@ const MaterialList = () => {
                       type="button"
                       variant="light"
                       onClick={() => {
-                        addMaterialHandler(material._id)
+                        addMaterialHandler(material.id)
                       }}
                     >
                       <FaPlusCircle />
@@ -127,7 +130,7 @@ const MaterialList = () => {
                       type="button"
                       variant="light"
                       onClick={() => {
-                        substractMaterialHandler(material._id)
+                        substractMaterialHandler(material.id)
                       }}
                     >
                       <FaMinusCircle />
@@ -138,7 +141,7 @@ const MaterialList = () => {
                   <Button
                     variant="danger"
                     className="btn-sm"
-                    onClick={() => deleteHandler(material._id)}
+                    onClick={() => deleteHandler(material.id)}
                   >
                     <FaTrash style={{ color: "white" }} />
                   </Button>

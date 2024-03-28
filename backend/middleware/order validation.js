@@ -41,10 +41,10 @@ export const productValidation = (req, res, next) => {
 export const workerValidation = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().required().min(3).max(20),
-    possition: Joi.string().required().min(3).max(20),
+    position: Joi.string().required().min(3).max(20),
     salary: Joi.number().required().min(1),
     address: Joi.string().required(),
-    phoneNumber: Joi.string().required().min(10).max(10),
+    phone_number: Joi.string().required().min(10).max(10),
   }).options({ stripUnknown: true })
 
   const { error } = schema.validate(req.body, { abortEarly: false })
