@@ -15,9 +15,12 @@ const Home = () => {
   const userInfo = useSelector((state) => state.auth.userInfo)
   const { data, isLoading, isError: error } = useGetLandingPageProductsQuery()
 
+  console.log(data)
+
   return (
     <>
-      {userInfo && userInfo.role === "admin" ? (
+      <Dashbord />
+      {/* {userInfo && userInfo.role === "admin" ? (
         <Dashbord />
       ) : (
         <>
@@ -84,7 +87,7 @@ const Home = () => {
             </>
           )}
         </>
-      )}
+      )} */}
     </>
   )
 }

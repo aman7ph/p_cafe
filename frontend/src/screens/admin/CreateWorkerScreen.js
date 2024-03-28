@@ -24,15 +24,15 @@ const CreateWorkerScreen = () => {
     try {
       const data = await createWorker({
         name,
-        possition,
+        position: possition,
         salary,
         address,
-        phoneNumber,
+        phone_number: phoneNumber,
       }).unwrap()
       if (data) {
         toast.success("worker created")
-        console.log(data)
-        navigate("/admin/workerslist")
+
+        navigate("/admin/workerlist")
       }
     } catch (error) {
       toast.error(error?.data?.message || error.error)

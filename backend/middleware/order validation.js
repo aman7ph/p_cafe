@@ -45,7 +45,11 @@ export const workerValidation = (req, res, next) => {
     salary: Joi.number().required().min(1),
     address: Joi.string().required(),
     phone_number: Joi.string().required().min(10).max(10),
+<<<<<<< HEAD
   }).options({ stripUnknown: true });
+=======
+  }).options({ stripUnknown: true })
+>>>>>>> e2ae56fcb1b5a540563c90de0d51429f113155dc
 
   const { error } = schema.validate(req.body, { abortEarly: false });
   if (error) {

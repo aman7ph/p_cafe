@@ -21,7 +21,7 @@ const CreateMaterialsScreen = () => {
     try {
       const { data } = await createMaterial({
         name,
-        initialNumber,
+        initial_number: initialNumber,
       })
       if (data) {
         toast.success("material created")
