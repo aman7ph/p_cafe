@@ -50,18 +50,16 @@ const getWorkerById = asyncHandler(async (req, res, next) => {
 });
 
 const addWorker = asyncHandler(async (req, res, next) => {
-  const { name, position, salary, address, phoneNumber } = req.body;
+  const { name, position, salary, address, phone_number } = req.body;
   const client = await getConnection();
   try {
-    await client.connect();
-
     const query = `
       INSERT INTO workers (name, position, salary, address, phone_number) 
       VALUES ($1, $2, $3, $4, $5) 
       RETURNING *
     `;
 
-    const values = [name, position, salary, address, phoneNumber];
+    const values = [name, position, salary, address, phone_number];
     const result = await client.query(query, values);
 
     if (result.rows.length === 0) {

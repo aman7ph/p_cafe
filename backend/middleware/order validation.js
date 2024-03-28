@@ -1,4 +1,4 @@
-import Joi from "joi"
+import Joi from "joi";
 
 export const orderValidation = (req, res, next) => {
   const schema = Joi.object({
@@ -12,15 +12,15 @@ export const orderValidation = (req, res, next) => {
           "Invalid arrival time format. Please use HH:MM (e.g., 10:30)."
         )
       ),
-  }).options({ stripUnknown: true })
+  }).options({ stripUnknown: true });
 
-  const { error } = schema.validate(req.body, { abortEarly: false })
+  const { error } = schema.validate(req.body, { abortEarly: false });
   if (error) {
-    res.status(400)
-    throw new Error(error.details[0].message)
+    res.status(400);
+    throw new Error(error.details[0].message);
   }
-  next()
-}
+  next();
+};
 
 export const productValidation = (req, res, next) => {
   const schema = Joi.object({
@@ -28,29 +28,29 @@ export const productValidation = (req, res, next) => {
     price: Joi.number().required().min(1),
     category: Joi.string().required(),
     description: Joi.string().required(),
-  }).options({ stripUnknown: true })
+  }).options({ stripUnknown: true });
 
-  const { error } = schema.validate(req.body, { abortEarly: false })
+  const { error } = schema.validate(req.body, { abortEarly: false });
   if (error) {
-    res.status(400)
-    throw new Error(error.details[0].message)
+    res.status(400);
+    throw new Error(error.details[0].message);
   }
-  next()
-}
+  next();
+};
 
 export const workerValidation = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().required().min(3).max(20),
-    possition: Joi.string().required().min(3).max(20),
+    position: Joi.string().required().min(3).max(20),
     salary: Joi.number().required().min(1),
     address: Joi.string().required(),
-    phoneNumber: Joi.string().required().min(10).max(10),
-  }).options({ stripUnknown: true })
+    phone_number: Joi.string().required().min(10).max(10),
+  }).options({ stripUnknown: true });
 
-  const { error } = schema.validate(req.body, { abortEarly: false })
+  const { error } = schema.validate(req.body, { abortEarly: false });
   if (error) {
-    res.status(400)
-    throw new Error(error.details[0].message)
+    res.status(400);
+    throw new Error(error.details[0].message);
   }
-  next()
-}
+  next();
+};
