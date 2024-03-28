@@ -38,8 +38,6 @@ export const productValidation = (req, res, next) => {
   next();
 };
 
-import Joi from "joi";
-
 export const workerValidation = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().required().min(3).max(20),
